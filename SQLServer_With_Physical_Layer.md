@@ -59,6 +59,7 @@
 
 ## 3. Component Communication Flow
 
+![SQL Server Architecture](assets/sqlserver/ComponentCommunication.png)
 1. CPU executes query request via SQLOS
 2. Query Processor assigns to scheduler
 3. Storage Engine requests data
