@@ -51,6 +51,7 @@
    - Memory management abstraction
 
 2. **Memory Hierarchy**:
+![Memory Hierarchy](assets/sqlserver/MemoryHierarchy.png)
    CPU Registers → L1 Cache → L2 Cache → L3 Cache → Buffer Pool → Data Files
 
 3. **I/O Subsystem**:
