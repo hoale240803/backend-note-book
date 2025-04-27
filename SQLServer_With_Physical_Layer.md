@@ -1,7 +1,7 @@
 # SQL Server Computer Architecture: A Creator's Perspective
 
 ## 1. Foundational Computer Architecture
-
+![Foundational Computer Architecture](assets/sqlserver/FoundationalComputerArchitectureDiagram.png)
 ### Hardware Layer
 - CPU Cores → CPU Cache → Main Memory
 - Storage Hierarchy (SSD/NVMe → HDD)
