@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
-namespace testwebapi.Controllers
+namespace DiagnosticScenarios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
