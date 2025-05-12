@@ -19,6 +19,7 @@ https://en.wikipedia.org/wiki/C_Sharp_(programming_language)
 5. Type safety?
 
 # 2. Fundamental
+
 # 2.1 General Structure of C# program
 C# program có thể có một hoặc nhiều file. 
 Mỗi file chứa 0 or nhiều namespaces.
@@ -324,7 +325,7 @@ Cả hai ví dụ trước, run-time type là một string, compile-time là m�
 Nếu 2 types là khác cho một viến, điều quan trọng để hiểu khi mà compile-time type và run-time type được apply. compile-time type xác định tất cả các hành động đảm nhiệm bởi compiler. Những hành động của compiler bao gồm các phương thức gọi resolution, overload resoution và biến ngầm định và explicit casts. run-time type xác định tất cả hành động mà đã được giải quyết ở run-time. Những hành động ở thời điểm run-time này bao gồm gửi virual method calls, đánh giá **is** và **switch** expression, và nhiều type testing apis khác. Để hiểu hơn về làm sao mà code của bạn có thể tương tác với nhiều types, và nhận định được hành động nào sẽ ap đặt lên type nào.
 
 
-# 2.2.2. Stack vs Heap
+# 2.2.10 Stack vs Heap
 Stack: nhanh, nhỏ, và tự động.
 - Dùng cho: 
     - value types int, double, bool, struct
@@ -381,9 +382,31 @@ Key differences
 Ref: https://www.shekhali.com/value-type-and-reference-type-in-c/
 
 # 3. Object-oriented programming
+https://en.wikipedia.org/wiki/Object-oriented_programming
+- Lập trình hướng đối tượng là gì? là một mô hình lập trình dựa vào khái niệm *object*. Object có thể chứa (fields, attributes, properties) và hành động họ có thể thực hiện ( procedure or methods). Trong oop, một chương trình máy tính được thiết kế sao cho những object này tương tác với nhau.
+
+C# cũng là một ngôn ngữ lập trình hướng đối tượng. Có 4 nguyên tắc sau:
+
+Abstraction: mô hình hóa các thuộc tính **attributes** và **interactions** tương tác giữa các thực thể như là một class, định nghĩa thành một trình bày trừu tượng cho một hệ thống.
+
+Encapsulation: ẩn đi những đi những **state** trạng thái và các **functionality** chức năng của một object và chỉ cho phép truy cập thông qua một public set function.
+
+Inheritance Ability: tạo ra những cái abstractions mà dựa vào cái abstraction trước đó
+
+Polymorphism có thể kế thừa những thuộc tính hoặc phương thức theo nhiều cách khác nhau thông qua các abstractions.
+
 
 # 4. Functional techniques
 
 # 5. Exceptions and errors
 
 # 6. Coding styles
+
+## 6.1 C# identifier names
+
+Tools có thể giúp nhóm tăng cường convetion. Bạn có thể bật code analysis để đặt rules mà bạn thích hơn.
+Bạn cũng có thể tạo ra một **editorconfig** visual studio tự động tạo để tăng cường hướng dẫn style của bạn. Như một điểm khởi đầu, bạn có thể copy file dotnet/dóc.editổcnfig để sử dụng theo style của chúng tôi.
+
+Những tools này giúp team bạn đáp ứng được về guidelines. Visual studio áp dụng những rule này trong tất cả file. editorconfig file trong scope để fỏmat code của bạn. Bạn có thể sử dụng nhiều file configủaiton để tăng cường convention cho toàn tập đoàn của bạn, team thập chí là một dự án nhỏ.
+
+### 6.1.1 

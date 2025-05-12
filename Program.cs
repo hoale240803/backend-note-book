@@ -1,6 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
 using HelloWorld;
+using HelloWorld.Classes;
 
 var number1 = new IntNumber
 {
@@ -13,47 +14,50 @@ var temp = number1.IntValue;
 Console.WriteLine(number1.IntValue); // Output: 6, no ref = 5
 Console.WriteLine(number2.IntValue); // Output: 6, no ref = 6
 
-DoubleValue(ref temp);
-Test.TestMethodParameterHint(1);
-Console.WriteLine($"{number1.IntValue}"); // output: 12, noref = 10
-Console.WriteLine($"{number2.IntValue}"); // output: 12, noref = 13
-CalculateSum(1, 2);
 
-Type type = typeof(MyStruct);
-Console.WriteLine($"Base type: {type.BaseType}");
-Console.WriteLine($"Is ValueType: {type.IsValueType}");
-Console.WriteLine($"Is Class: {type.IsClass}");
-Console.WriteLine($"Is Class: {type.IsSealed}");
-
-string str = String.Empty;
-// var sizeOfString = sizeof(aInt);
-var sizeOf = Marshal.SizeOf<MyStruct>();
-
-Console.WriteLine(sizeOf);
-
-void DoubleValue(ref int x)
-{
-    x = x * 2; // 10
-}
-
+ClassA classA = new ClassA();
+ISubInterface inter = classA;
+inter.MyMethod("");
 
 Animal a = new Mammal();
 
-if (a is Reptile)
+// Polymorphism: Using interface for loose coupling
+IVehicle[] vehicles =
+[
+    new Car("Toyota"),
+    new Motorcycle("Harley")
+];
+
+foreach (var vehicle in vehicles)
 {
-    Reptile r = (Reptile)a; // InvalidCastException at run time
-}
-int CalculateSum(int a, int b)
-{
-    return a + b;
+    ProcessVehicle(vehicle);
 }
 
+static void ProcessVehicle(IVehicle vehicle)
+{
+    Console.WriteLine($"Processing vehicle: {vehicle.Model}");
+    vehicle.StartEngine();
+    vehicle.Drive();
+    Console.WriteLine();
+}
 [StructLayout(LayoutKind.Sequential)]
 public struct MyStruct
 {
     public int A; // 4 bytes
     public double B; // 8 bytes
     public long C; // 8 bytes
+
+    int CalculateSum(int a, int b)
+    {
+        return a + b;
+    }
+
+    double CalculateSum(int a, int b, double c)
+    {
+
+        return 0;
+    }
+
 }
 
 class IntNumber
@@ -90,6 +94,8 @@ namespace YourNamespace
 
     interface IYourInterface
     {
+        int UserId { get; set; }
+        void GetUsers();
     }
 
     delegate int YourDelegate();
@@ -105,7 +111,37 @@ namespace YourNamespace
         }
     }
 }
-class TestClassWithSnippet
-{
 
+public interface ITestInterface
+{
+    public int Age { get; set; }
+    public int MyProperty { get; set; }
+}
+
+public interface ISubInterface : ITestInterface
+{
+    public void MyMethod(string parameter)
+    {
+        System.Console.WriteLine("Hello");
+    }
+}
+
+class ClassA : ISubInterface
+{
+    public int Age { get; set; }
+    public int MyProperty { get; set; }
+
+    // public void MyMethod(string temp)
+    // {
+
+    // }
+}
+
+public abstract class TestClassWithSnippet
+{
+    public virtual void PrintSomething()
+    {
+    }
+
+    public abstract void PrintSomething2();
 }
