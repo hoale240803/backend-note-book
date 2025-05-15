@@ -67,7 +67,8 @@ namespace YourNamespace
 
 Get cert ở đây => https://code.visualstudio.com/docs/csharp/get-started
 
-# 2.2. Type system
+# 2.2. C# Type system
+# 2.2.1 Overview
 https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/
 
 C# là một ngôn ngữ thiên về type. Mỗi variables và constant có một type, cũng như expression đều đánh giá được 1 giá trị.
@@ -81,7 +82,7 @@ Nhưng thông tin được lưu trữ trong type có thể bao gồm items:
 - **interfaces** mà nó implements
 - **operations** mà nó được phép
 
-# 2.2.1 Chỉ rõ types trong khai báo biến
+# 2.2.1.1 Chỉ rõ types trong khai báo biến
 Khi bạn khai báo một biến hay là một constant trong một program, bạn nên chỉ rõ nó là kiểu(type) gì hoặc dùng **use** keyword
 để cho compliler can thiệp tới type. Dưới đây là những khai báo biến sử dụng built-in numberic types và user-defined types.
 
@@ -117,7 +118,7 @@ Sau khi bạn khai báo biến này rồi. Bạn không thể tạo lại một 
 
 Đọc thêm: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions
 
-# 2.2.1.1 Casting and type conversions
+# 2.2.1.1.1 Casting and type conversions
 
 Bởi vì c# được ép kiểu cố định tại thời điểm biên dịch, sau khi một biến được khai báo, nó không thể được khai báo lại thêm một lần nào nữa hoặc gán vào một giá trị của một type khác mà không phải là một kiểu ngầm định có thể thể chuyên đổi sang type của biến đó. Ví dụ, string không thể ngầm định chuyển đổi sang int. vì thế, sau khi bạn khai báo biến i như một biến int, bạn không thể gán một string "Hello" cho nó được.
 
@@ -139,7 +140,7 @@ bạn có một biến integer bạn muốn truyền vào một method như là 
 - User-defined conversions: user-defined conversions sử dụng một phương thức đặc biệc rằng bạn có thể sử dụng những phương thức đặc biệt để bật explicit và implicit conversions giữa những custom types mà không phải có mối quan hệ base class-derived. 
 Xem thêm ở đây: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/user-defined-conversion-operators
 
-# 2.2.1.1 Implicit conversions
+# 2.2.1.1.2 Implicit conversions
 Đối với nhưng kiểu built-in numeric, một cuộc chuyển đổi ngầm có thể làm ra khi mà giá trị được lưu trữ phù hợp với biến mà không bị lược bỏ hay làm tròn. Ví dụ kiểu integer types, sự giới hạn này có nghĩa là một khoảng giá trị của kiểu nguồn là đúng hoàn toàn với subset của kiểu đích. Ví dụ, một biến kiểu long(64bit integer) có thể lưu bất kì giá trị nào của int(32integer).
 
 ```
@@ -157,7 +158,7 @@ Base b = d;
 ```
 - Conversions with helper classes:
 
-# 2.2.1.2 Explicit conversions
+# 2.2.1.1.3 Explicit conversions
 Tuy nhiên, nếu một chuyển đổi không thể thực hiện mà không có rủi ro của sự mất mát thông tin, lúc này compiler sẽ yêu cầu bạn cần được thực hiện ép kiểu một cách rõ ràng, nó gọi là **cast**. Một cast là một con đương chuyển đổi rõ ràng. Nó chỉ ra rằng bạn nên nhận thức được mất mát dữ liệu có thể xảy ra, hoặc cast này có thể thất bại ở thời gian chạy.
 
 ```
@@ -178,10 +179,10 @@ Reptile r = (Reptile)a; // InvalidCastException at run time
 ```
 Ép kiểu tường mình đối số **a** sang **Reptile** tạo nên một giả sử nguy hiểm. Nó sẽ an toàn hơn nếu không đưa ra giả định này, mà hãy là kiểm tra type
 
-# 2.2.2 Built-in types
+# 2.2.1.2 Built-in types
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types
 
-# 2.2.3 Custom types
+# 2.2.1.3 Custom types
 Bạn có thể dùng struc, clas, intèace, enum và record xây dựng nên type cho riêng mình. .NET library bản thân nó là một tập hợp các custom types mà bạn có thể sử dụng trong ứng dụng của bạn. Mặc định, cái used types mà thường xuyên sử dụng nhất trong thư viện thì đã có sẵn ở trong chương trình c#. Những types các khác thì chỉ có sẵn khi bạn thêm rõ ràng một tham chiếu project tới assembly mà đã định nghĩa chung. Sau khi trình biên dịch có tham chiếu tời assembly, bạn có thể khai báo biến (và constants) của tyeps đã được khai báo trong assembly bên trong source code. Thêm chi tiết: https://learn.microsoft.com/en-us/dotnet/standard/class-library-overview
 
 Một trong những quyết định đầu tiên bạn làm khi định nghĩa một type là định nghĩa cái hàm dựng nào được sử dụng cho type của bạn. Danh sách dưới đây giúp bạn tạo ra nhưng khởi tạo ban đầu. Có sự trùng lặp trong việc lựa chọn. Nhưng hầu hết các trường hợp, nhiều hơn 1 sẽ là lựa chọn hợp lý.
@@ -190,7 +191,7 @@ Một trong những quyết định đầu tiên bạn làm khi định nghĩa m
 - Nếu type chủ yếu là dùng cho lưu trữ data, không có các hành vi, chọn một **record class** or **record struct**
 - Nếu type là một phần của kế thừa cấp bậc, chọn **record class** hoăc một **class**
 
-# 2.2.4 The common type system
+# 2.2.1.4 The common type system
 Điều quan trọng nhất là phải hiểu 2 điểm quan trọng nhất về type system trong .net:
 - Nó hổ trợ nguyên tắc về kế thừa. Những kiểu này có thể dẫn xuất từ kiểu khác, nó được gọi là base types. Các type dẫn xuất này kế thừa (một vài sự ngăn chặn) ví dụ như là methodss, thuộc tính và một số members của basse type. Cái base type có thể nằm bên trong dẫn xuất từ một có type khác, trong trường hợp nó dẫn xuất type được ké thừa từ nhnưgx membé của cả base type trong kế thừa cấp bậc. Tất cả các types, nó bao gồm cả built-in numeric types vd system.int32(c# từ khóa int)
 nó dẫn xuất cuối cùng từ một base type duy nhất, nó là system.Object(c# keyword: object). Dieuè nàu đã thhông nhất typ thoe cấp bậc nó được gọi là CTS(CommonTypeSystem). Thêm thông tin: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance
@@ -209,7 +210,7 @@ Một struct là một value type. khi mà một struct được tạo ra, biế
 
 Nói tóm lại, những classes được sử dụng cho model có những behavior phức tap. Classes điển hình thì nó lưu trữ data mà nó dự định sẽ thay đổi sau khi được tạo ra. Structs một phương án tốt nhất cho cấu trúc data nhỏ. Struct điển hình chỉ luwu trữ data mà không dự định thay đổi sau khi struct được tạo ra. Record type là cấu trúc data có thêm thành viên của trình biên dịch. Records điển hình để lưu trữ data mà không có dự định thay đổi sau khi tạo ra.
 
-# 2.2.5 Value types
+# 2.2.1.5 Value types
 Value types dẫn xuất từ **System.ValueType**, nó được dẫn xuất từ **System.Object**. Những types  dẫn xuất từ **System.ValueType** có nhưng behavior đặt biệt từ CLR. Những biến Value type trực tiếp chứa những values của chúng. Bộ nhớ cho một struct nó được cấp phát bên trong những gì context của varible được khai báo. Không có cấp phát bộ nhớ heap hoặc tập rác quá nhiều cho biến value type. Bạn có thể khai báo record struct types mà những value types và tập hợp những members cho records.
 
 Có 2 kiểu value types: struct và enum:
@@ -243,7 +244,7 @@ Tất cả các enums đều kế thừa thừ System.Enum, nó kế thừa từ
 Thêm chi tiết: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum
 
 
-# 2.2.6 Reference types
+# 2.2.1.6 Reference types
 Một type mà định nghĩa như là class, record, delegate, array, hoặc là interface thì chúng được coi là reference type.
 
 Khi bạn khai bao biến của một reference type, nó có chưa giá trị null cho tới khi bạn gán cho nó một instance của một type hoặc bạn tạo ra một using với new operator. Tạo và gán của một class được mô tả theo ví dụ dưới đây.
@@ -279,7 +280,7 @@ int len = nums.Length;
 Reference types hoàn toàn hổ trợ kế thừa. Khi mà bạn tạo ra một class, bạn có thể kế thừa từ bất kì inteface hay là class mà nó không định nghĩa là **sealed**. Những lớp khác có thể kế thừa thừ lớp của bạn và override tại nhưng virtual methods của bạn.
 
 
-# 2.2.7 Generic types
+# 2.2.1.7 Generic types
 Một type có thể dược khai báo với một hoặc nhiều type parameters mà nó đóng vai trò như là chổ giữ chổ cho actual type (concrete type). Khách hàng sẽ cung cấp một concrete type khi mà nó khởi tạo một instant của type đó. Ví dụ types gọi là generic types.
 **System.Collections.Generic.List<T>** có một type parameter thoe convention cho thên là T. Khi bạn tạo một instance của type này, bạn chỉ rõ ra cái kiểu type objects mà list này cân chứa.
 
@@ -292,7 +293,7 @@ stringList.Add(4);
 
 Việc sử dụng type parameter này làm cho nó có thể tái sử dụng nếu trùng class để giữ bất kì phần tử nào, mà không phải convert mỗi phần tử sang object. Generic collection classé được gọi là strongly typed collections bởi vì trình biên dịch biết cái type cụ thể của  các phần từ trong collection này và có thể báo lỗi ở compile time.
 
-# 2.2.8 Implicit types, anonymous types, and nullable value types
+# 2.2.1.8 Implicit types, anonymous types, and nullable value types
 Bạn có thể ngâm định kiể cho một biến local (nhưng không phải là một member của class) bằng việc sử dụng var keyword.
 
 Biến thì vẫn nhận một type tại thời điểm biên dịch, nhưng type mà được cung cấp cho compiler.
@@ -306,7 +307,7 @@ Thông thường thì các value types không thể có giá trị null. Nhưng 
 Xem thêm https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
 
 
-# 2.2.9 Compile-time type and run-time type
+# 2.2.1.9 Compile-time type and run-time type
 Một biến có compile-time và run-time types khác nhau. compile-time type là được khai báo hoặc được suy ra từ một biến trong source code. run-time type là một type của instance tham chiếu tới biến đó. Thường thì 2 types này giống nhau, nhưn ví dụ dưới đây:
 
 ```
@@ -325,7 +326,7 @@ Cả hai ví dụ trước, run-time type là một string, compile-time là m�
 Nếu 2 types là khác cho một viến, điều quan trọng để hiểu khi mà compile-time type và run-time type được apply. compile-time type xác định tất cả các hành động đảm nhiệm bởi compiler. Những hành động của compiler bao gồm các phương thức gọi resolution, overload resoution và biến ngầm định và explicit casts. run-time type xác định tất cả hành động mà đã được giải quyết ở run-time. Những hành động ở thời điểm run-time này bao gồm gửi virual method calls, đánh giá **is** và **switch** expression, và nhiều type testing apis khác. Để hiểu hơn về làm sao mà code của bạn có thể tương tác với nhiều types, và nhận định được hành động nào sẽ ap đặt lên type nào.
 
 
-# 2.2.10 Stack vs Heap
+# 2.2.1.10 Stack vs Heap
 Stack: nhanh, nhỏ, và tự động.
 - Dùng cho: 
     - value types int, double, bool, struct
@@ -380,6 +381,134 @@ Key differences
 | **Performance**       | Generally faster (no GC overhead) | May incur GC overhead |
 
 Ref: https://www.shekhali.com/value-type-and-reference-type-in-c/
+
+
+
+# 2.2.2 Namespaces
+Namespaces - dịch một cách rất chay thuần túy là "Không gian tên". Namespaces được sử dụng nhiều trong C# theo 2 cách. .NET sử dụng namespaces để tổ chức nhiều classes bên trong.
+
+```
+System.Console.WriteLine("Hello World!");
+```
+System là một namespace và Console là một lớp ở trong namespace đó. 
+
+Hai, khai báo namespaces của bạn có thể giúp kiểm soát phạm vị của class và tên các phương thức trong một dự án lơn. 
+
+
+# 2.2.3 Classes
+Class là môt reference type. Ở thời điểm thực thi, khi bạn khi báo một biến tham chiếu, biến đó có giá trị là null có tới khi bạn tạo ra một instance của class bằng việc sử dùng **new** operator, hoặc gán cho nó một object có type tương thích đã dược tạo từ một nơi khác
+
+```
+//Declaring an object of type MyClass.
+MyClass mc = new MyClass();
+
+//Declaring another object of the same type, assigning it the value of the first object.
+MyClass mc2 = mc;
+```
+Khi object được tạo ra, bộ nhớ được cấp phát và quản lý trong heap cho những object này và biến của nó chỉ giữ tham chiếu tới vị trí của object trước đo. Memory được sử dụng bởi object thì sẽ được quản lý tự động CLR, hay còn gọi là Garbage collection. 
+xem thêm https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals
+
+Declaring classes
+Class được khai báo bằng class keyword theo sau bởi một mã định danh duy nhất.
+
+```
+//[access modifier] - [class] - [identifier]
+public class Customer
+{
+   // Fields, properties, methods and events go here...
+}
+```
+Mặc định quyền truy cập vào class là internal
+
+
+Creating objects
+Mặc dù chúng thỉnh thoảng có thể trao đổi cho nhau, một class và object là khác. Một class định nghĩa một type của object, nhưng bản thân nó không phải là 1 object. Một object là một thực thể dựa trên class, và nó đôi khi tham chiếu tới như là một instance của class.
+```
+Customer object1 = new Customer();
+```
+Khi mà một íntance của 1 class được tạo ra, một tham chiếu tới object được truyền lại cho lập trình viên. Ở ví dụ trên, **object1** là một tham chiếu tới một object dựa trên **Customer**. Tham chiếu này trỏ tới một object mới nhưngg không chứa data bên trong. Sự thật là bạn có thể tạo một tham chiếu object mà không cân tạo một object:
+ ```
+ Customer object2;
+ ```
+ Chúng ta không khuyến khích tạo object references mà không tham chiếu tới một object, bởi vì cố gắng tiếp cận một object thông qua một tham chiếu như này sẽ bị fail trong runtime. Một reference cos theer trỏ tới một object, một là tạo một object, hoắc bằng việc truyền chó nó một object đã tồn tại.
+
+ ```
+Customer object3 = new Customer();
+Customer object4 = object3;
+ ```
+
+ Đoạn code này tạo ra 2 objects và cả hai điều tham chiếu tới cùng một object.  Vì thế mà bất kì sự thay đổi nào tới một **object3** điều được phản ánh lên **object4**. Bởi vì objects nó dựa vào classes mà được trở tời bằng tham chiếu class là hiểu như là những tham chiếu.
+
+Constructors and initialization
+Ở những phần trước đó đã giới thiệu cú pháp để khai báo một class type và tạo một instance của type đó. Khi bạn tạo ra một instance của một type, bạn muốn đảm bảo rằng giá trị những fields và properties được khởi tạo những giá trị hữu ích. Có một vài cách khởi tạo giá trị như sau.
+- Chấp nhận default values
+- Fields initializers
+- Constructor parameter
+- Object initializers
+
+Mọi kểu trong .NET đều có giá trị mặc định. Ví dụ, giá trị 0 cho kiểu số, null cho tất cả reference type. Bạn có thể dựa trên những giá trị mặc định đó để sử dụng chúng cho có nghĩa.
+
+Khi giá trị mặc định của .NET không đúng, bạn có thể đặt một giá trị khởi tạo mới như một **field initializer**
+```
+public class Container
+{
+    // Initialize capacity field to a default value of 10:
+    private int _capacity = 10;
+}
+```
+Bạn có thể yêu cầu người gọi cung cấp một giá trị khởi tạo bằng việc định nghĩa môt constructor.
+```
+public class Container
+{
+    private int _capacity;
+
+    public Container(int capacity) => _capacity = capacity;
+}
+```
+c# 12 bạn có thể dùng primary constructor
+```
+public class Container(int capacity)
+{
+    private int _capacity = capacity;
+}
+```
+
+Bạn có thể sử dùng **required** modifier trên thuộc tính mà cho phép người gọi sử dụng một **object initializer** để set giá trị khởi tạo cho các properties:
+```
+public class Person
+{
+    public required string LastName { get; set; }
+    public required string FirstName { get; set; }
+}
+
+var p1 = new Person(); // Error! Required properties not set
+var p2 = new Person() { FirstName = "Grace", LastName = "Hopper" };
+```
+Class inheritance
+
+Tất cả các class đều hổ trở tính chất kế thừa, một đăc trưng cơ bản của OOP. Khi mà bạn tạo ra một class có nghĩa bạn có thể quyền kế thừa tất cả các class mà không định nghia **sealed**. Những classes khác có thể kế thừa từ class của bạn và override virtual methods. Hơn thế nữa, bạn có thể implement một hay nhiều interfaces.
+
+Kế thừa được thực hiện bằng việc sử dụng một dẫn xuất **derivation**, nó có nghĩa là một class được khai báo bằng việc sử dụng base class mà từ đó nó hế thừa data cho tới behaviors. Một base class được đặc tả bằng việc thêm dấu **:** mà tên của lớp base class theo sau lớp dẫn xuất
+
+```
+public class Manager : Employee
+{
+    // Employee fields, properties, methods and events are inherited
+    // New Manager fields, properties, methods and events go here...
+}
+```
+
+Khi một class khai bao bao gồm một base class, nó kế thừa tất cả các members của một base class ngoại trừ constructors.
+
+Một class chỉ có thể kế thừa trức tiếp từ một base class. Tuy nhiên, bởi vì base class có thể kế thừa từ một class khác, nên một class có thể gián tiếp kế thừa từ nhiều base classes. Hơn thế nữa nó, một class có thể trực tiếp implement một hoặc nhiều interfaces.
+
+Một class có thể khai báo là abstract. Một abstract class thì có thể chứa nhiều abstract method mà có signature nhưng không implement. Abstract class không thể được khởi tạo. Chúng chỉ có thể sử dụng thông qua các lớp dẫn xuất mà implement từ abstract methods. Ngược lại thì sealed class thì không cho bất kì class nào được phép kề thừa.
+xem thêm: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/abstract-and-sealed-classes-and-class-members
+
+Class có thể được chi ra thành nhiều files khác nhau.
+xem thêm: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/partial-classes-and-methods
+
+# 2.2.4 Records
 
 # 3. Object-oriented programming
 https://en.wikipedia.org/wiki/Object-oriented_programming

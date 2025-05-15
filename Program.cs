@@ -1,7 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
-using HelloWorld;
 using HelloWorld.Classes;
+
 
 var number1 = new IntNumber
 {
@@ -13,6 +13,8 @@ number1.IntValue = number1.IntValue + 1;
 var temp = number1.IntValue;
 Console.WriteLine(number1.IntValue); // Output: 6, no ref = 5
 Console.WriteLine(number2.IntValue); // Output: 6, no ref = 6
+TestClassWithSnippet class1 = new DerivedTestClassWithSnippet();
+class1.PrintSomething2();
 
 
 ClassA classA = new ClassA();
@@ -144,4 +146,12 @@ public abstract class TestClassWithSnippet
     }
 
     public abstract void PrintSomething2();
+}
+
+public class DerivedTestClassWithSnippet : TestClassWithSnippet
+{
+    public override void PrintSomething2()
+    {
+        throw new NotImplementedException();
+    }
 }
