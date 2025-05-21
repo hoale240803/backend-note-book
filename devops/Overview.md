@@ -1,5 +1,10 @@
 # FE
-S3, cloudfront,...
+S3 ✅, 
+cloudfront ✅, 
+beanstalk,
+amplify,
+ecs
+
 
 
 ```
@@ -130,8 +135,68 @@ Key features:
 - Uses CloudFront's free default SSL certificate
 
 
+2. Comparison of AWS Elastic Beanstalk, Amplify, and ECS for ReactJS Deployment
+Below is a comparison of the three services for deploying a ReactJS application, focusing on ease of use, scalability, control, and suitability for your testing scenario. This draws from your interest in straightforward deployment and aligns with your prior use of Terraform and GitHub Actions.
+
+| Feature             | AWS Elastic Beanstalk                                               | AWS Amplify                                              | AWS ECS (with Fargate)                                       |
+|---------------------|---------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| Service Type        | PaaS (Platform as a Service)                                        | BaaS (Backend as a Service)                              | Container Orchestration (IaaS/Serverless with Fargate)       |
+| Best For            | Developers wanting managed deployment with some control             | Frontend developers needing quick, serverless deployment | Teams needing containerized apps with fine-grained control   |
+| ReactJS Deployment  | Host static files or Node.js server serving React                   | Host static React apps with built-in CI/CD               | Run React in a Docker container (e.g., with Nginx)           |
+| Ease of Use         | Moderate: Upload code, Beanstalk handles infrastructure             | High: Simple setup for static sites, Git-based CI/CD     | Moderate to Complex: Requires Docker and cluster setup       |
+| Scalability         | Auto-scales with EC2 instances, customizable rules                  | Auto-scales serverlessly via CloudFront/S3               | Auto-scales with Fargate or EC2, highly configurable         |
+| Control             | Moderate: Control over EC2 instances, less over infra               | Low: Fully managed, limited infra customization          | High: Full control over containers and networking            |
+| Default Domain      | *.elasticbeanstalk.com (e.g., myapp.us-east-1.elasticbeanstalk.com) | *.amplifyapp.com (e.g., d123456.amplifyapp.com)          | ECS with Fargate uses ALB domain (e.g., *.elb.amazonaws.com) |
+| Cost                | Pay for EC2 instances, ELB, etc.; no Beanstalk fee                  | Free tier available, pay for usage (S3, CloudFront)      | Pay for Fargate vCPUs/memory or EC2, plus ALB costs          |
+| CI/CD Integration   | Supports GitHub Actions, CodePipeline                               | Built-in Git-based CI/CD, seamless with GitHub           | Supports GitHub Actions, CodePipeline, but manual setup      |
+| Testing Suitability | Good for testing with Node.js backend, uses default domain          | Ideal for quick testing of static React apps             | Best for containerized testing, more setup needed            |
+| Learning Curve      | Moderate: Familiar to .NET developers, some AWS knowledge           | Low: Frontend-focused, minimal AWS knowledge needed      | High: Requires Docker, ECS, and networking knowledge         |
+| Terraform Support   | Well-supported, manages EC2, ELB, etc.                              | Limited, as Amplify CLI is preferred                     | Strong, manages ECS clusters, tasks, and ALB                 |
+
+
+1. AWS Elastic Beanstalk
+Elastic Beanstalk can deploy a React app either as a static site (served by a Node.js server) or with a backend. For simplicity, I’ll configure it to serve the static build/ files using a Node.js server.
+
+Terraform Configuration (terraform/beanstalk/main.tf):
+```
+provider "aws" {
+  region = var.aws_region
+}
+
+# Elastic Beanstalk Application
+resource "aws_elastic_beanstalk_application" "react_app" {
+  name        = "react-frontend"
+  description = "ReactJS frontend application"
+}
+
+# Elastic Beanstalk Environment
+resource "aws_elastic_beanstalk_environment" "react_env" {
+  application         = aws_elastic_beanstalk_application.react_app.name
+  name                = "react-frontend-env"
+  solution_stack_name = "64bit Amazon Linux 2 v3.5.1 running Node.js 16"
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+    value     = "t2.micro"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "EnvironmentType"
+    value     = "SingleInstance" # For testing, single instance
+  }
+  tags = { Name = "react-frontend-beanstalk" }
+}
+
+# Output
+output "beanstalk_url" {
+  value       = aws_elastic_beanstalk_environment.react_env.endpoint_url
+  description = "Use this URL (e.g., http://<env>.us-east-1.elasticbeanstalk.com) for testing"
+}
+```
+
+
 # BE
-API gateway, lambda, ec2, ecs, eks
+API gateway, lambda, ec2, ecs, ekshow 
 
 # Database
 rds, dynamo

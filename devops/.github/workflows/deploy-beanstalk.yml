@@ -1,0 +1,39 @@
+name: Deploy ReactJS to Elastic Beanstalk
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: Build Frontend
+      run: |
+        cd devops/front-end
+        npm install
+        npm run build
+        npm install express --save
+    - name: Package for Beanstalk
+      run: |
+        cd devops/front-end
+        zip -r app.zip build/ server.js package.json package-lock.json
+    - name: Deploy to Elastic Beanstalk
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
+      run: |
+        aws elasticbeanstalk update-environment \
+          --environment-name react-frontend-env \
+          --application-name react-frontend \
+          --version-label $(git rev-parse --short HEAD)
+        cd devops/front-end
+        aws s3 cp app.zip s3://${{ secrets.BUCKET_NAME }}/app-$(git rev-parse --short HEAD).zip
+        aws elasticbeanstalk create-application-version \
+          --application-name react-frontend \
+          --version-label $(git rev-parse --short HEAD) \
+          --source-bundle S3Bucket=${{ secrets.BUCKET_NAME }},S3Key=app-$(git rev-parse --short HEAD).zip

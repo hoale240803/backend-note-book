@@ -4,8 +4,9 @@ provider "aws" {
 
 # S3 Bucket for React App
 resource "aws_s3_bucket" "frontend_bucket" {
-  bucket = var.bucket_name
-  tags   = { Name = "react-frontend-bucket" }
+  bucket        = var.bucket_name
+  force_destroy = true # Automatically delete all objects during destroy
+  tags          = { Name = "react-frontend-bucket" }
 }
 
 resource "aws_s3_bucket_website_configuration" "frontend_website" {
