@@ -1,0 +1,25 @@
+# .gitignore
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.tfplan
+*.lock.hcl
+
+# Node.js
+frontend/node_modules/
+frontend/.env
+frontend/build/
+frontend/dist/
+*.log
+npm-debug.log*
+
+# Miscellaneous
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.bak
+.env
+*.tmp
