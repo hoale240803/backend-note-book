@@ -5,5 +5,5 @@ variable "aws_region" {
 
 variable "bucket_name" {
   description = "My Bucket"
-  default     = "fe-app"
+  default     = "myapp-frontend-20250521"
 }
