@@ -109,15 +109,183 @@ public class MyMiddleware
 1. What is Middleware?
 Definition: Middleware is software assembled into an app pipeline to handle requests and responses. Each component:
 
-Chooses whether to pass the request to the next component in the pipeline.
+- Chooses whether to pass the request to the next component in the pipeline.
+- Can perform work before and after the next component in the pipeline.
+- Can short-circuit the pipeline to prevent further processin
 
-Can perform work before and after the next component in the pipeline.
+2. Why is middlware important?
+Purpose: Middleware components are used to:
 
-Can short-circuit the pipeline to prevent further processin
-#### Write a custom middleware to log reqeust paths in a new ASP.NET core WebAPI project
+Handle cross-cutting concerns like authentication, logging, error handling, etc.
+
+Build a request-processing pipeline where each component can inspect, modify, or terminate requests and responses.
+
+3. Implement middleware in ASP.NET core
+Using built-in Middleware
+```
+public void Configure(IApplicationBuilder app)
+{
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+    app.UseRouting();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
+}
+```
+**The order of middleware is crucial; for instance, UseRouting must come before UseEndpoints**
+
+Creating custom middleware
+```
+public class CustomMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public CustomMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Pre-processing logic here
+
+        await _next(context);
+
+        // Post-processing logic here
+    }
+}
+
+// Extension method to add the middleware
+public static class CustomMiddlewareExtensions
+{
+    public static IApplicationBuilder UseCustomMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<CustomMiddleware>();
+    }
+}
+```
+
+4. Analyzing: middleware execution flow
+
+**Request Flow**: When an HTTP request is received, it passes through each middleware component in the order they are added. Each middleware can:
+
+Process the request and pass it to the next middleware.
+
+Short-circuit the pipeline and generate a response immediately.
+
+**Response Flow**: After the response is generated, it travels back through the middleware pipeline in reverse order, allowing each middleware to process the response.
+
 #### Read about RESTful APIi principles ( HTTP verbs, status coes)
+🔹 Best Practices for RESTful API Design
+Use Nouns for Endpoints: Endpoints should represent resources (e.g., /users, /orders).
+
+Plural Naming: Use plural nouns for consistency (e.g., /products instead of /product).
+
+HTTP Methods for Actions: Utilize HTTP verbs to define actions (e.g., GET /users, POST /users).
+
+Statelessness: Each request should contain all the information needed to process it.
+
+Versioning: Implement API versioning to manage changes (e.g., /api/v1/users).
+
+Error Handling: Provide meaningful error messages and use appropriate status codes.
+
+Pagination: For large datasets, implement pagination to manage responses.
+
+Filtering and Sorting: Allow clients to filter and sort data through query parameters.
+
 ##### Create a ProductController to accept a prduct JSON.
 ##### Add a POST endpoint to ProductController
+1. What is Action Filter?
+In ASP.NET Core, Action Filters are components that run before and after the execution of an action method. They are part of the broader filter pipeline, which includes various filter types that execute at different stages of the request processing pipeline.
+
+2. Types of Filters in ASP.NET Core
+
+Auhtorization Filters: Run fist to determin if the user is authorized for the request.
+
+Resource Filters: Run after authorization and before model biding; useful for caching and resource initialization.
+
+Action Filters: Run before and after the action methods executes; ideal for logging, validation, and modifying action parameters or results.
+
+Exception Filters: Handle exceptions thrown by action methods or other filters.
+
+Result Filters: Run before and after the execution of action results; useful for modifying the response.
+
+3. Implementing a Custom Action Filter
+
+To create a custom action filter, you can inherit from ActionFilterAttribute class and override it's methods
+
+```
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+
+public class LogActionFilter : ActionFilterAttribute
+{
+    private readonly ILogger<LogActionFilter> _logger;
+
+    public LogActionFilter(ILogger<LogActionFilter> logger)
+    {
+        _logger = logger;
+    }
+
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        _logger.LogInformation("Executing action: {ActionName}", context.ActionDescriptor.DisplayName);
+    }
+
+    public override void OnActionExecuted(ActionExecutedContext context)
+    {
+        _logger.LogInformation("Executed action: {ActionName}", context.ActionDescriptor.DisplayName);
+    }
+}
+```
+4. Applying the Action Filter
+
+At the Action Level:
+```
+[LogActionFilter]
+public IActionResult MyAction()
+{
+    // Action logic here
+}
+```
+
+At the Controller Level
+```
+[LogActionFilter]
+public class MyController : Controller
+{
+    // All actions in this controller will use the filter
+}
+```
+
+Globally in Startup.cs
+```
+services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<LogActionFilter>();
+});
+
+```
+Applying filters globally ensures that all controllers and actions use the filter, promoting consistency across the application
+
+5. Best Practices
+Use Filters for Cross-Cutting Concerns: Ideal for loggin, error handling, and authorization.
+
+Avoid Business Logic in Filters: keep business logic winthin action methods or services
+
+Leverage Dependency Injection: Filters can receive services via constructor injection, promoting testability and modularity.
+
+Be mindfull of Execution Order: Filters execute in a specific order; understanding this helps in designing predictable behavior.
+
+
+[Compare Filters vs Middleware](https://codewithmukesh.com/blog/filters-in-aspnet-core/#filters-vs-middleware-when-to-choose-what)
+
+
+
 ### Study action filters in asp.net core
 
 ## 3.2 Entity Framework and Testing

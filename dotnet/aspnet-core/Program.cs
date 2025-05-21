@@ -1,3 +1,4 @@
+using aspnet_core.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseMaintenanceMiddleware();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
