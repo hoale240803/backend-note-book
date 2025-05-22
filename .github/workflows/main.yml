@@ -1,37 +1,16 @@
-name: Deploy ReactJS to S3
-
+name: Notify Amplify
 on:
   push:
     branches: [ main ]
-
 jobs:
-  build-and-deploy:
+  notify:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    - name: Build Frontend
-      run: |
-        cd devops/front-end  # Adjusted path to match your structure
-        npm install
-        npm run build
-
-    - name: Debug bucket name
-      run: |
-        echo "Bucket: ${{ secrets.BUCKET_NAME }}"
-        echo "CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}"
-        echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
-    - name: Deploy to S3
+    - name: Trigger Amplify Build
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: us-east-1
       run: |
-        aws s3 sync devops/front-end/build/ s3://${{ secrets.BUCKET_NAME }}/ --delete
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        aws amplify start-job --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name main --job-type RELEASE
