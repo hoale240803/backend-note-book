@@ -14,7 +14,7 @@ resource "aws_amplify_app" "react_app" {
         preBuild:
           commands:
             - cd devops/front-end
-            - npm install
+            - npm ci # Use npm ci for consistent installs
         build:
           commands:
             - npm run build
@@ -26,7 +26,7 @@ resource "aws_amplify_app" "react_app" {
         paths:
           - devops/front-end/node_modules/**/*
   EOT
-  enable_branch_auto_build = true
+  enable_branch_auto_build = false
 }
 
 # Amplify Branch
