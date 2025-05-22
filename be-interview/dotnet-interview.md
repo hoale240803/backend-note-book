@@ -289,10 +289,58 @@ Be mindfull of Execution Order: Filters execute in a specific order; understandi
 ### Study action filters in asp.net core
 
 ## 3.2 Entity Framework and Testing
-What is this?
-is an object-relational mapper that enables . NET developers to work with relational data using domain-specific objects.
 
-2. Why use repository and Unit of work pattern?
+What is EF?
+
+EF is an object-relational mapper that enables . NET developers to work with relational data using domain-specific objects.
+
+EF core Query performance tips
+Avoid Over-Fetching (Select Only Needed Data)
+Use Eager Loading for Related Data
+Avoid Lazy Loading in Performance-Critical Code
+Filter Early with Where
+Use AsNoTracking for Read-Only Queries
+Batch Updates with ExecuteUpdate
+Solution: Use ExecuteUpdate (EF Core 7+) for bulk updates:
+Use Indexes for Frequent Queries
+Avoid Unnecessary ToList Calls:
+
+Lazy vs. Eager Loading
+**Lazy Loading**:
+**Definition**: Navigation properties (e.g., Product.Category) are loaded automatically when accessed, triggering additional database queries.
+How It Works: Enabled by installing Microsoft.EntityFrameworkCore.Proxies and configuring UseLazyLoadingProxies in DbContext:
+```
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("MyWebApi")
+           .UseLazyLoadingProxies());
+```
+**Pros:**
+Simplifies code by loading related data on-demand.
+Useful for small-scale apps or prototyping.
+**Cons:**
+Causes N+1 query issues (one query per related entity), degrading performance.
+Unexpected queries can occur in loops or serialization (e.g., JSON responses in ProductsController).
+Hard to predict database load, violating Clean Architecture’s predictability.
+
+2. EagerLoading:
+
+Definition: Related data is loaded in a single query using Include or ThenInclude.
+```
+var products = context.Products
+    .Include(p => p.Category)
+    .ThenInclude(c => c.SubCategories)
+    .ToList();
+```
+
+3. Explicit Loading (less common):
+Definition: Related data is loaded manually using Load or LoadAsync for specific navigation properties.
+How It Works
+```
+var product = await context.Products.FindAsync(1);
+await context.Entry(product).Reference(p => p.Category).LoadAsync();
+```
+
+3. Why use repository and Unit of work pattern?
 2.1 Repository pattern acts as an abstraction layer between the business logic (domain) and the data access layer (e.g EF). It encapsulates data access logic, providing a collection-like interface for querying and manipulating entities
 Why use it?
 
@@ -317,6 +365,8 @@ Reduced Database calls: manages a single DbContext instance across repositories 
 - Verifying component interactions (e.g controller to EF core)
 - Ensuring end-to-end functionality (e.g., API endpoints work as expected)
 - Validating database queries, as in your course app's data access
+
+
 
 ## 3.3 Design Patterns and Architecture
 ## 3.4 Devops, Containers, and Cloud

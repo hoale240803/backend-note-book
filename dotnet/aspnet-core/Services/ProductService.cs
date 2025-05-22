@@ -16,7 +16,7 @@ public class ProductService : IProductService
 
     public async Task<Product> GetProduct(int id)
     {
-        var res = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var res = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         return res;
     }
