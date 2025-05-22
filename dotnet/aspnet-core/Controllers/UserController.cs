@@ -22,7 +22,9 @@ public class UsersController : ControllerBase
     [HttpGet("token")]
     public async Task<IActionResult> GetTokenAsync(TokenRequestModel model)
     {
-        var result = await _userService.GetTokenAsync(model);
+        var result = await _userService
+            .GetTokenAsync(model)
+            .ConfigureAwait(false);
         return Ok(result);
     }
 }

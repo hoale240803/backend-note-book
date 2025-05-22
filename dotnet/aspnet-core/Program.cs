@@ -7,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddServices(builder.Configuration);
+builder.Services.AddHttpClient("PricingApi", client =>
+{
+    client.BaseAddress = new Uri("https://api.pricing.com/");
+});
+builder.Services.AddScoped<IExternalPricingService, ExternalPricingService>();
 
 var app = builder.Build();
 

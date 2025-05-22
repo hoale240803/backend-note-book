@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using aspnet_core.Contexts;
 using aspnet_core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,9 +7,9 @@ namespace aspnet_core.ActionFilters
 {
     public class ValidateAndLogActionFilter : IActionFilter
     {
-        public readonly CourseContext _context;
+        public readonly ApplicationDbContext _context;
 
-        public ValidateAndLogActionFilter(CourseContext context)
+        public ValidateAndLogActionFilter(ApplicationDbContext context)
         {
             _context = context;
         }

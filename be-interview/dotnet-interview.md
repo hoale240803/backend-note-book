@@ -179,7 +179,7 @@ Short-circuit the pipeline and generate a response immediately.
 
 **Response Flow**: After the response is generated, it travels back through the middleware pipeline in reverse order, allowing each middleware to process the response.
 
-#### Read about RESTful APIi principles ( HTTP verbs, status coes)
+#### Read about RESTful API principles ( HTTP verbs, status coes)
 🔹 Best Practices for RESTful API Design
 Use Nouns for Endpoints: Endpoints should represent resources (e.g., /users, /orders).
 
@@ -289,6 +289,35 @@ Be mindfull of Execution Order: Filters execute in a specific order; understandi
 ### Study action filters in asp.net core
 
 ## 3.2 Entity Framework and Testing
+What is this?
+is an object-relational mapper that enables . NET developers to work with relational data using domain-specific objects.
+
+2. Why use repository and Unit of work pattern?
+2.1 Repository pattern acts as an abstraction layer between the business logic (domain) and the data access layer (e.g EF). It encapsulates data access logic, providing a collection-like interface for querying and manipulating entities
+Why use it?
+
+- Separation of concerns: isolates data access logic from business logic, aligning with Clean Architecutre and DDD. 
+- Testablility: Enables unit testing by allowing you to mock the repository instead of the DbContext. This simplifies testing business logic without hitting the database.
+
+- Maintanability: Centrolizes data access logic, making it easier to modify queries or switch database (e.g. from in-memory to SQL Server)
+
+2.2 Unit of work pattern
+The unit of work pattern coordinates multiple repository operations, ensuring the've commited as a single transaction. It typeically wraps DbContext to manage changes and database commits.
+
+Why use it?
+Transactional consistency: Ensurees all database operations (e.g creating a course and logging an audit entry) succeed or fail together. This prevents partial updates if an error occurs during entities creation.
+
+Reduced Database calls: manages a single DbContext instance across repositories minimizing resource usage. For example, one SaveChanges call commits all changes (courses, audit logs) in a request.
+
+## 3.3 Unit Test vs Integration Test
+1. Unit Test: 
+- Testing individual componets(controller, services) in isolation.
+- Hight test coverage of business logic (e.g edcases, error handling)
+2. Integration test:
+- Verifying component interactions (e.g controller to EF core)
+- Ensuring end-to-end functionality (e.g., API endpoints work as expected)
+- Validating database queries, as in your course app's data access
+
 ## 3.3 Design Patterns and Architecture
 ## 3.4 Devops, Containers, and Cloud
 ## 3.5 ReactJs fresher
