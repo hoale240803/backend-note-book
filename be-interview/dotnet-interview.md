@@ -369,6 +369,43 @@ Reduced Database calls: manages a single DbContext instance across repositories 
 
 
 ## 3.3 Design Patterns and Architecture
+### Read about SOLID principles (focus on Single Responsibility and Open/Closed).
+### Refactor ProductsController to follow Single Responsibility (e.g., move logic to a service).
+SOLID is an acronym fỏ five design principles that pomote maintainable, scalable, and robust object-oriented software. Introduced by Robert C. Martin, tehse principles are foundational for Clean Architecture and microservices, both key to your job's requirements. The principles are:
+
+Single Responsibility Principles
+Open/closed principle
+Liskov Substitution Principle
+Interface Segregation 
+Dependency Inversion
+
+1. Single responsibility
+Definition: A class should have only one reason to change, meaning it should have a single responsibility or purpose.
+
+2. Open / closed 
+Software entinties( classess, modules, functions) should be open for extension but closed for modification
+
+todo: continue
+3. Study Clean Architecture layers (Application, Domain, Infrastructure).
+
+DDD Entities: an entity is an object with a unique identity and muatable state, presenting a concept in the domain that persits over time. Entities are defined by their identity (e.g. a unique), not their attributes, and encapsulate business logic.
+
+DDD aggregates: an aggregate is a cluster of entities and value objectss treated as a single unit, with one entity acting as the aggregate root.
+Aggregates enforce consistency boundaries and transactional integrity in the domain.
+
+Aggregate Root: một tập hợp của các thực thể và giá trị đối tượng được coi như là một đơn vị duy nhất. Tổng hợp thực thi ranh giới nhất quán và tính toàn vẹn giao dịch trong miền.
+
+Core Characteristics:
+- Aggregate Root: là một thực thể duy nhất mà phục vụ như là một đầu vào cho việc tiếp cận các aggregate
+(e.g. Order for Order and OrderItem)
+- Consistency Boundary: tất cả sự thay đổi trong aggregate đều nhất quán trong một transaction
+
+- Encapsulation(đóng gói): Code bên ngoài chỉ được tương tác với aggregate root, không phải là internal entities or value objects
+
+- Invariants: Nguyên tắc business nên giữ (e.g "order total nên kết hợp tổng tất cả OrderItem prices);
+
+4. Read about Domain-Driven Design (DDD) entities and aggregates.
+
 ## 3.4 Devops, Containers, and Cloud
 ## 3.5 ReactJs fresher
 ## 3.6 Mock Interviews and soft skills
