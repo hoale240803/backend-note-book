@@ -1,22 +1,52 @@
 provider "aws" {
   region = var.aws_region
+  # Limit retries for API errors
+  max_retries = 3
 }
 
 # VPC
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-  tags       = { Name = "react-vpc" }
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  tags                 = { Name = "react-vpc" }
 }
 
 resource "aws_subnet" "public" {
-  count             = 2
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.${count.index}.0/24"
-  availability_zone = element(data.aws_availability_zones.available.names, count.index)
-  tags              = { Name = "react-public-subnet-${count.index}" }
+  count                   = 2
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.${count.index}.0/24"
+  availability_zone       = element(data.aws_availability_zones.available.names, count.index)
+  map_public_ip_on_launch = true
+  tags                    = { Name = "react-public-subnet-${count.index}" }
 }
 
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+# Internet Gateway
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  tags   = { Name = "react-igw" }
+}
+
+# Route Table
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+  tags = { Name = "react-public-rt" }
+}
+
+# Route Table Association
+resource "aws_route_table_association" "public" {
+  count          = 2
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
 
 # ECS Cluster
 resource "aws_ecs_cluster" "react_cluster" {
@@ -38,8 +68,23 @@ resource "aws_ecs_task_definition" "react_task" {
     portMappings = [{
       containerPort = 80
       hostPort      = 80
+      protocol      = "tcp"
     }]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = "/ecs/react-frontend"
+        "awslogs-region"        = var.aws_region
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
   }])
+}
+
+# CloudWatch Log Group
+resource "aws_cloudwatch_log_group" "react_log_group" {
+  name              = "/ecs/react-frontend"
+  retention_in_days = 7
 }
 
 # ECR Repository
@@ -65,6 +110,24 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+resource "aws_iam_role_policy" "ecs_logs_policy" {
+  name   = "ecs_logs_policy"
+  role   = aws_iam_role.ecs_task_execution.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "${aws_cloudwatch_log_group.react_log_group.arn}:*"
+      }
+    ]
+  })
+}
+
 # ALB
 resource "aws_lb" "react_alb" {
   name               = "react-alb"
@@ -72,6 +135,10 @@ resource "aws_lb" "react_alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = aws_subnet.public[*].id
+  tags               = { Name = "react-alb" }
+  timeouts {
+    create = "2m"
+  }
 }
 
 resource "aws_security_group" "alb_sg" {
@@ -88,6 +155,7 @@ resource "aws_security_group" "alb_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = { Name = "react-alb-sg" }
 }
 
 resource "aws_lb_target_group" "react_tg" {
@@ -96,6 +164,15 @@ resource "aws_lb_target_group" "react_tg" {
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
+  health_check {
+    path                = "/index.html"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
 }
 
 resource "aws_lb_listener" "react_listener" {
@@ -125,6 +202,10 @@ resource "aws_ecs_service" "react_service" {
     container_name   = "react-container"
     container_port   = 80
   }
+  depends_on = [aws_lb_listener.react_listener]
+  timeouts {
+    create = "2m"
+  }
 }
 
 resource "aws_security_group" "ecs_sg" {
@@ -141,15 +222,31 @@ resource "aws_security_group" "ecs_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = { Name = "react-ecs-sg" }
 }
 
-# Output
+# Outputs
 output "alb_url" {
   value       = "http://${aws_lb.react_alb.dns_name}"
-  description = "Use this URL (e.g., http://<alb-dns>.us-east-1.elb.amazonaws.com) for testing"
+  description = "Use this URL for testing"
 }
 
 output "ecr_id" {
   value       = aws_ecr_repository.react_repo.id
   description = "ECR repo id"
+}
+
+output "vpc_id" {
+  value       = aws_vpc.main.id
+  description = "VPC ID for debugging"
+}
+
+output "subnet_ids" {
+  value       = aws_subnet.public[*].id
+  description = "Subnet IDs for debugging"
+}
+
+output "internet_gateway_id" {
+  value       = aws_internet_gateway.main.id
+  description = "Internet Gateway ID for debugging"
 }
