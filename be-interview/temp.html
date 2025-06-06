@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Interactive Raspberry Pi Board</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let boardImg;
+
+      function preload() {
+        boardImg = loadImage("202d4400-8034-4162-b9c7-f13dcdea1e42.png");
+      }
+
+      function setup() {
+        createCanvas(566, 414); // Matches image size
+      }
+
+      function draw() {
+        background(255);
+        image(boardImg, 0, 0);
+
+        // Tooltip rendering
+        showHover(420, 160, 50, 80, "USB 3.0 Ports");
+        showHover(420, 80, 50, 60, "Ethernet Port");
+        showHover(250, 360, 80, 30, "HDMI Port");
+        showHover(40, 20, 80, 20, "GPIO Header");
+        showHover(160, 140, 70, 70, "SoC (CPU)");
+        showHover(340, 370, 30, 30, "Power In (USB-C)");
+      }
+
+      function showHover(x, y, w, h, label) {
+        if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+          fill(0, 0, 0, 180);
+          rect(mouseX + 10, mouseY + 10, textWidth(label) + 10, 25, 5);
+          fill(255);
+          textSize(12);
+          text(label, mouseX + 15, mouseY + 27);
+        }
+      }
+    </script>
+  </body>
+</html>
