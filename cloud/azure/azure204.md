@@ -186,6 +186,36 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.7 Azure Functions
 
+### Discover the key concepts covered in this course
+
+### Provide an overview of Azure Functions
+
+### Improve performance add reliability of Azure Functions by implementing best practices
+
+### Provide an overview durable functions
+
+### Create a durable function in C#
+
+### Manage connections in Azure functions
+
+### Connect to events and messaging services from AZure functions
+
+### use security strategies when configuring and running an Azure function
+
+### Outline the use of reliability support in Azure Functions
+
+### monitor function executions using Azure application insights
+
+### Use Azure Functions to deploy code continuously by using source control integration
+
+### Outline the use of deployment slots and how functions are affected by swapping slots
+
+### Manage a function app in Azure Portal
+
+### Identify situations in which you would use custom handlers in Azure Functions
+
+### Summarize the key concepts covered in this course
+
 ## 1.8 Azure Functions Triggers
 
 # 2. Develop for Azure storage
