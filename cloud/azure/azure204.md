@@ -218,6 +218,32 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.8 Azure Functions Triggers
 
+### discover the key concepts covered in this course
+
+### describe key concepts of triggers and bindings
+
+### Configure triggers and bindings in an Azure function
+
+### Run a Azure function from an HTTP request
+
+### Register Azure function biding extensions
+
+### Use binding expressions in an Azure function
+
+### Use binding expressions in an Azure function
+
+### Use the Azure Function return value
+
+### Integrate Azure functions with Blob Storage to build functions that react to changes in blog data
+
+### Work with Azure Cosmos DB bindings in Azure functions
+
+### Handle errors in Azure Function trigger and bindings
+
+### Bring dependencies to Azure Functions
+
+### Summarize the key concepts covered in this course
+
 # 2. Develop for Azure storage
 
 - Develop solutions that use Azure Cosmos DB
