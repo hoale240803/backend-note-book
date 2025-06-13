@@ -271,6 +271,30 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 2.2 Cosmos DB Containers
 
+### Discover the key concepts covered in this course
+
+### Describe indexing in Azure Cosmos DB
+
+### Use SQL queries as a JSON query language
+
+### Describe the Azure Cosmos DB resource model
+
+### Use partitioning and horizontal scaling in Azure Cosmos DB
+
+### Use stored procedures in Azure Cosmos DB
+
+### manage trigger resources using SQL API via REST
+
+### View the change feed in Azure Cosmos DB
+
+### Provision throughput on a container in Azure Cosmos DB for NoSQL
+
+### Set up global distribution on Azure Cosmos DB using API for NoSQL
+
+### View and change the consistency level in Azure Cosmos DB
+
+### Summarize the key concepts covered in this course
+
 ## 2.3 Blob Storage
 
 # 3. Implement Azure security
