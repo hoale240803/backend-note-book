@@ -251,6 +251,24 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 2.1 Cosmos DB Storage
 
+### Discover the key concepts covered in this course
+
+### Identify the key benefits of Azure Cosmos DB
+
+### Choose the appropriate application programming interface (API) for Azure Cosmos DB storage
+
+### Work with NoSQL databases in the context of Azure Cosmos DBs
+
+### Work with relational databases in the context of Azure Cosmos DBs
+
+### Develop an ASP.NET web application with AZure Cosmos DB for NoSQL
+
+### Use Azure Cosmos DB NoSQL client library for .NET
+
+### Query Azure Cosmos DB by using the API for NoSQL
+
+### Summarize the key concepts covered in this course
+
 ## 2.2 Cosmos DB Containers
 
 ## 2.3 Blob Storage
