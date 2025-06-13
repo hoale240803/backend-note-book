@@ -156,6 +156,34 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.6 Web Apps
 
+### Discover they key concepts covered in this course
+
+### Run your app in Azure App Service from a ZIP package
+
+### Deploy your code as a ZIP file to Azure App Service
+
+### Sync content from Github to Azure App Service
+
+### Deploy Azure App SErvice using Azure Pipelines
+
+### Deploy microservices predictively in Azure
+
+### Connect to Azure App Service using managed identity
+
+### Add app Authentication to a web app running on Azure App Service
+
+### Configure an Azure App Service app
+
+### Buy a custom domain name for Azure App Service
+
+### Secure a connection to Azure App Service using digital security certificated
+
+### Scale up an app in Azure App Service
+
+### Set up autoscale in Azure App Service
+
+### Summarize the key concepts covered in this course
+
 ## 1.7 Azure Functions
 
 ## 1.8 Azure Functions Triggers
