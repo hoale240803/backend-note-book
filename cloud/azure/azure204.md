@@ -8,7 +8,63 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.1 Virtual machines
 
+### Discover the key concepts covered in this course
+
+### Outline the use of virtual machines (VMs) in Azure
+
+### Create a Linux VM with Azure CLI
+
+### Create a Linux VM with Azure portal
+
+### Create a Linux VM with Azure PowerShell
+
+### Create a Window VM with Azure CLI
+
+### Create a Window VM with Azure portal
+
+### Create a Window VM with Azure PowerShell
+
+### Connect to a Linux VM
+
+### Connect to a VM running Windows
+
+### Connect to a VM using Secure Shell(SSH)
+
+### Create and manage SSH keys for a Linux VM
+
+### Generate SSH keys in Azure portal
+
+### Generate SSH keys in Azure CLI
+
+### Summarize the key concepts covered in this course
+
 ## 1.2 Resource Manager Templates
+
+### Discover the key concepts covered in this course
+
+### Outline the use of Azure Resource Manager (ARM) templates
+
+### Install and set up Visual Studio
+
+### Create JSON templates with Visual Studio
+
+### Create JSON templates with Azure Portal
+
+### Create and deploy a template spec
+
+### Implement deployment scripts to your deployment by using parameters and outputs
+
+### Identify Azure Resource Manger advanced template functionality
+
+### Create and deploy an ARM template
+
+### Deploy a local ARM template
+
+### Use Azure Portal to export a template
+
+### Use the ARM template test toolkit
+
+### Summarize the key concepts covered in this course
 
 ## 1.3 Azure Container Registry
 
