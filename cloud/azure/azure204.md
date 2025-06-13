@@ -98,7 +98,7 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.4 Container Instances
 
-### Discover the key concepts coverted in this course
+### Discover the key concepts covered in this course
 
 ### Provide an overview of Azure Container Instances
 
@@ -127,6 +127,32 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 ### Summarize the key concepts covered in this course
 
 ## 1.5 App Service
+
+### Discover the key concepts covered in this course
+
+### List the key features of an Azure App Service
+
+### Identify usage scenarios for app service environments
+
+### Choose an Azure compute service
+
+### Deploy a ASP.NET web app to Azure App Service
+
+### Create a Node.js web app in Azure App Service
+
+### Create a PHP web app in Azure App Service
+
+### Create a Java app on Azure App Service
+
+### Create a Python web app to Azure App Service
+
+### CReate an app service app using an Azure REsource Manager (ARM) template
+
+### Create a custom container in Azure App Service
+
+### Enable diagnostic logging for apps in Azure App Service
+
+### Summarize the key concepts covered in this course
 
 ## 1.6 Web Apps
 
