@@ -68,6 +68,34 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.3 Azure Container Registry
 
+### Discover the key concepts coverted in this course
+
+### Identify the key features of container registries in Azure
+
+### Create a container registry using Azure portal
+
+### Create a private container registry using Azure CLI
+
+### Create a private container registry using Azure powershell
+
+### Create a geo-replicated container registry using an Azure Resource Manager(ARM) template
+
+### Use the OCI Registry as Storage (ORAS) tool to posh and pull a sample artifact to an Azure container registry
+
+### Create and deploy a container image
+
+### Build and deploy container images using Azure container registry tasks
+
+### Build and store container images with Azure container registry
+
+### Create a Linux container app
+
+### Push an image to your Azure container registry using Docker CLI
+
+### Use the Azure container registry client libraries
+
+### Summarize the key concepts covered in this course
+
 ## 1.4 Container Instances
 
 ## 1.5 App Service
