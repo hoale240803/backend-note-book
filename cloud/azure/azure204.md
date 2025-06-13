@@ -68,7 +68,7 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 1.3 Azure Container Registry
 
-### Discover the key concepts coverted in this course
+### Discover the key concepts covered in this course
 
 ### Identify the key features of container registries in Azure
 
@@ -97,6 +97,34 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 ### Summarize the key concepts covered in this course
 
 ## 1.4 Container Instances
+
+### Discover the key concepts coverted in this course
+
+### Provide an overview of Azure Container Instances
+
+### Deploy a container instance using Azure CLI
+
+### Deploy a container instance using Azure Portal
+
+### Deploy a container instance using Azure PowerShell
+
+### Deploy a container instance using Bicep
+
+### Deploy a container instance using Azure Resource Manager(ARM) template
+
+### Deploy a container instance using Docker CLI
+
+### Run a docker container with an Azure container instance
+
+### Deploy a multi-container group using YAML
+
+### Deploy a multi-container group using an ARM template
+
+### Deploy a multi-container group using docker compose
+
+### package a Node.js web application into a container image
+
+### Summarize the key concepts covered in this course
 
 ## 1.5 App Service
 
