@@ -297,6 +297,32 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 2.3 Blob Storage
 
+### Discover the key concepts covered in this course
+
+### Describe Blog storage
+
+### Create, upload, download, and list blobs with the Azure Portal
+
+### Create, upload, download, and list blobs with PowerShell
+
+### Create, upload, download, and list blobs with the Azure CLI
+
+### Use Azure Storage Explorer to create a blob
+
+### use .NET to manage properties and metadata fro a blog containers
+
+### Create a project to work with the Azure Blob Storage client library for .NET
+
+### Use Immutable storage with Azure Blob Storage
+
+### Identify the access tiers available for Azure Storage
+
+### Set and change a blob tier
+
+### Rehydrate a blob to an online tier
+
+### Summarize the key concepts covered in this course
+
 # 3. Implement Azure security
 
 - Implement user authentication and authorization
