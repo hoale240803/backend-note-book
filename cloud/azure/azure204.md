@@ -684,6 +684,67 @@ exit
 
 ### Discover the key concepts covered in this course
 
+#### Course Introduction
+
+Azure Resource Manager (ARM) templates are essential tools for managing Azure resources in a consistent and automated manner. This course provides comprehensive training on creating and deploying ARM templates using various tools and methodologies.
+
+#### Learning Objectives
+
+##### Core Concepts
+
+- Understanding ARM template fundamentals
+- Working with JSON template structure
+- Template specification requirements
+
+##### Tools and Techniques
+
+- **Visual Studio Code** - Primary development environment
+- **Azure Portal** - Web-based template management
+- **Deployment Scripts** - Automation of template deployment processes
+
+##### Key Capabilities Covered
+
+- Creating and deploying templates locally
+- Exporting existing templates for reuse
+- Template quality assurance and testing
+- Automated deployment workflows
+
+#### Course Structure
+
+The course follows a hands-on approach with:
+
+- **Practical exercises** throughout each module
+- **Lab assignments** for real-world application
+- **Progressive complexity** from basics to advanced concepts
+
+---
+
+#### Summary
+
+This course serves as a comprehensive introduction to ARM templates, covering everything from basic JSON template creation to advanced deployment automation. Students will gain practical experience with industry-standard tools while preparing for the AZ-204 certification exam.
+
+#### Key Points
+
+- ARM templates enable consistent, automated Azure resource management
+- Multiple tools available: Visual Studio Code and Azure Portal
+- Course includes both theoretical knowledge and hands-on practice
+- Directly aligned with AZ-204 certification requirements
+- Emphasis on automation and quality assurance practices
+
+#### Important Concepts
+
+- **ARM Templates**: Infrastructure as Code (IaC) for Azure
+- **JSON Structure**: Template format and syntax
+- **Deployment Scripts**: Automation capabilities
+- **Template Export**: Reusability and sharing
+- **Local Development**: Offline template creation and testing
+
+#### Questions/Notes
+
+- What specific Azure resources will be covered in the hands-on labs?
+- Are there prerequisites for Visual Studio Code setup?
+- How does this course integrate with other AZ-204 preparation materials?
+
 ### Outline the use of Azure Resource Manager (ARM) templates
 
 ### Install and set up Visual Studio
