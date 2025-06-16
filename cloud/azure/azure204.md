@@ -877,6 +877,68 @@ ARM templates are the **de facto standard** for Azure resource management, provi
 
 ### Install and set up Visual Studio
 
+#### 1. ✅ Download & Install VS Code
+
+- Open browser → Search: `Download Visual Studio Code`
+- Go to: [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
+- Download the **User Installer x64** (for Windows)
+- Follow Setup Wizard:
+  - Accept license agreement
+  - Use default install location
+  - Add **"Open with Code"** to Windows Explorer context menu
+  - Click **Install** and then **Finish** to launch VS Code
+
+---
+
+#### 2. 🧭 Explore Visual Studio Code Interface
+
+- **Left Toolbar Icons:**
+  - 📁 File Explorer
+  - 🔍 Search
+  - 🔄 Source Control (e.g., Git)
+  - 🐞 Debug
+  - 🧩 Extensions
+- **Bottom Left:** Profile & Settings
+- **Top Menu:** File, Edit, View, Run, etc.
+
+---
+
+#### 3. 💡 ARM Templates & Bicep
+
+- ARM templates are **JSON files** used to define Azure infrastructure
+- **Bicep** is a higher-level syntax that compiles into ARM JSON
+  - More readable and maintainable
+  - Better suited for developers
+
+---
+
+#### 4. ⚙️ Install Bicep Extension
+
+- Click **Extensions** icon (last on left toolbar)
+- Search for **Bicep**
+- Install the main Bicep extension
+
+---
+
+#### 5. 📂 Create a Project Folder
+
+- Go to: **File → Open Folder**
+- Create folders:
+  - `C:\work\cldsaz2302`
+- Select the folder and click **Select Folder**
+- Accept the **"Do you trust this folder?"** prompt
+
+---
+
+#### ✅ Final Setup Summary
+
+- Installed **VS Code**
+- Added **Bicep extension**
+- Created a **project folder**
+- Ready to begin writing and managing **ARM templates**
+
+> You are now fully set up to start your journey with Infrastructure as Code (IaC) on Azure using VS Code and Bicep.
+
 ### Create JSON templates with Visual Studio
 
 ### Create JSON templates with Azure Portal
