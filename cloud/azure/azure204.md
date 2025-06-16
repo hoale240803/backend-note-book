@@ -391,6 +391,34 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 4.3 Application Troubleshooting
 
+### Discover the key concepts covered in this course
+
+### Provide an overview of Azure Monitor and its capabilities for monitoring and logging
+
+### Use Log Analytics to collect, analyze, and troubleshoot log data
+
+### Enable Azure Diagnostics to gather data for troubleshooting and analysis
+
+### Use Event Hubs to collect and stream log data for real-time analysis
+
+### Utilize application insights to monitor the performance and usage of web applications
+
+### Identify the different types of logs available in Azure
+
+### Use Azure Metrics to analyze the performance and usage of Azure resources and applications
+
+### Configure Azure Alerts to notify you of specific conditions or changes in Azure resources and applications
+
+### Create and use dashboards to visualize log and metric data
+
+### Automate troubleshooting tasks using Azure Automation run-books and PowerShell
+
+### Use Azure Network Watcher to troubleshoot and diagnose network issues
+
+### Use Microsoft Defender for Cloud to detect and diagnose security=related issues in Azure resources and applications
+
+### Summarize the key concepts covered in this course
+
 # 5. Connect to and consume Azure services and third-party services
 
 - Implement API Management
