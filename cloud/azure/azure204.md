@@ -369,6 +369,26 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 4.2 Caching in Azure
 
+### Discover the key concepts covered in this course
+
+### Outline how caching is used
+
+### Provide and overview of Azure Front Door
+
+### Cache with Azure Front Door
+
+### Provide an overview of Azure Content Delivery Network (CDN)
+
+### Control Azure CDN caching behavior
+
+### Create an Azure CDN endpoint
+
+### Provide and overview of Azure Cache for Redis
+
+### Create an open-source Redis cache
+
+### Summarize the key concepts covered in this course
+
 ## 4.3 Application Troubleshooting
 
 # 5. Connect to and consume Azure services and third-party services
