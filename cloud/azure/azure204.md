@@ -181,6 +181,147 @@ For detailed documentation, refer to Azure Virtual Machines.
 
 ### Create a Linux VM with Azure PowerShell
 
+#### Prerequisites
+
+- Latest version of Azure PowerShell installed
+- Azure account with appropriate permissions
+
+#### Step-by-Step Process
+
+##### 1. Connect to Azure
+
+```powershell
+Connect-AzAccount
+```
+
+- Opens browser for authentication
+- Sign in with your Azure credentials
+- Close browser and return to PowerShell
+
+##### 2. Create Resource Group
+
+```powershell
+New-AzResourceGroup -Name sbdemo0105 -Location EastUS
+```
+
+**Key Points:**
+
+- Resource group = logical container for resources
+- Use capitalization for all Azure PowerShell commands
+- Choose location close to your region
+
+##### 3. Create Linux VM
+
+```powershell
+New-AzVm -ResourceGroupName sbdemo0105 -Name sbdemo0105 -Location EastUS -Image Debian -Size Standard_B2s -PublicIPAddressName sbdemo0105 -OpenPorts 80 -GenerateSshKey -SshKeyName sbdemo0105
+```
+
+**Command Breakdown:**
+
+- `-ResourceGroupName`: Specify the resource group
+- `-Name`: VM name
+- `-Location`: Azure region
+- `-Image`: OS image (Debian in this case)
+- `-Size`: VM size (Standard_B2s)
+- `-PublicIPAddressName`: Public IP resource name
+- `-OpenPorts 80`: Open port 80 for web traffic
+- `-GenerateSshKey`: Generate SSH keys automatically
+- `-SshKeyName`: Name for the SSH key
+
+**During Creation:**
+
+- Prompts for username and password
+- Generates private and public SSH keys
+- Process takes several minutes
+
+##### 4. Install Web Server on VM
+
+```powershell
+# Create bash script
+echo 'sudo apt-get update && sudo apt-get install -y nginx' > sbdemo0105.sh
+
+# Execute script on VM
+Invoke-AzVMRunCommand -ResourceGroup sbdemo0105 -Name sbdemo0105 -CommandId RunShellScript -ScriptPath \sbdemo0105.sh
+```
+
+**Key Points:**
+
+- Can't execute commands directly on VM
+- Must create a script file first
+- Script installs Nginx web server
+
+##### 5. Get VM Public IP Address
+
+```powershell
+Get-AzPublicIPAddress -ResourceGroupName sbdemo0105 -Name sbdemo0105 | select "IPAddress"
+```
+
+- Retrieves the public IP address of the VM
+- Use this IP to access the web server
+
+##### 6. Test the Web Server
+
+- Copy the IP address from PowerShell output
+- Navigate to the IP address in your browser
+- Should see "Welcome to nginx!" page
+
+##### 7. Clean Up Resources
+
+```powershell
+Remove-AzResourceGroup -Name sbdemo0105
+```
+
+- Deletes the entire resource group and all resources within it
+- Confirm deletion when prompted
+
+#### Important Notes
+
+##### Azure PowerShell Syntax Rules
+
+- All Azure PowerShell commands use capitalization
+- Resource groups are logical containers for resources
+- Most everything in Azure is a resource
+
+##### VM Creation Process
+
+- VM creation takes several minutes
+- SSH keys are automatically generated
+- Public IP is created as a separate resource
+
+##### Security Considerations
+
+- Port 80 opened for web traffic
+- SSH keys generated for secure access
+- Username and password required during creation
+
+##### Best Practices
+
+- Always clean up resources after testing to avoid charges
+- Choose appropriate VM sizes for your needs
+- Select regions close to your location for better performance
+
+#### Quick Reference Commands
+
+```powershell
+# Connect to Azure
+Connect-AzAccount
+
+# Create resource group
+New-AzResourceGroup -Name <name> -Location <location>
+
+# Create VM
+New-AzVm -ResourceGroupName <rg-name> -Name <vm-name> -Location <location> -Image <image> -Size <size> -PublicIPAddressName <ip-name> -OpenPorts <port> -GenerateSshKey -SshKeyName <key-name>
+
+# Run command on VM
+Invoke-AzVMRunCommand -ResourceGroup <rg-name> -Name <vm-name> -CommandId RunShellScript -ScriptPath <script-path>
+
+# Get public IP
+Get-AzPublicIPAddress -ResourceGroupName <rg-name> -Name <ip-name> | select "IPAddress"
+
+# Clean up
+Remove-AzResourceGroup -Name <rg-name>
+```
+
 ### Create a Window VM with Azure CLI
 
 ### Create a Window VM with Azure portal
