@@ -425,6 +425,34 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 5.1 Azure API Management
 
+### Discover the key concepts covered in this course
+
+### Describe Azure API Management
+
+### Set up and configure API gateways to control access to backend services and APIs
+
+### Implement security measures such as authentication and authorization to protect APIs
+
+### Use Azure API Management policies sto transform and manipulate incoming and outgoing requests and responses
+
+### Implement and manage different versions of an API
+
+### Set up and customize a developer portal to provide documentation and access to APIs
+
+### Configure caching to improve the performance of APIs
+
+### Implement rate limits and quotas to control usage and prevent overuse of resources
+
+### Set up and use monitoring and analytics to understand the usage and performance of APIs
+
+### Integrate AZure API Management with Azure Functions to create serverless APIs
+
+### Integrate Azure API management with Azure Active Directory(AD) to secure APIs using Azure AD
+
+### Identify options for deploying and scaling Azure API Management to meet your needs
+
+### Summarize the key concepts covered in this course
+
 ## 5.2 Azure Event Grid
 
 ## 5.3 Message-based solutions
