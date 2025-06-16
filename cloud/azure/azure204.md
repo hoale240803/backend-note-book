@@ -498,7 +498,187 @@ az group delete -n <resource-group-name>
 
 ### Generate SSH keys in Azure CLI
 
-### Summarize the key concepts covered in this course
+#### Prerequisites
+
+- Azure CLI installed and configured
+- Existing Azure VM (Linux-based)
+- PowerShell or command prompt access
+- Resource group with VM already created
+
+#### Step-by-Step Process
+
+##### 1. Create SSH Key Pair in Azure
+
+```bash
+az sshkey create -g sbdemo0110 -n sbdemo0114
+```
+
+**Command Breakdown:**
+
+- `az sshkey create`: Creates SSH key pair in Azure
+- `-g`: Resource group name (short form)
+- `-n`: Name for the SSH key resource
+
+**What Happens:**
+
+- Creates both private and public key
+- Saves keys locally in specified folder (usually `.ssh` directory)
+- Stores public key in Azure for VM access
+- Returns file paths for both keys
+
+##### 2. Get VM Public IP Address
+
+```bash
+az network public-ip show -g sbdemo0110 -n sbdemo0110-ip | ConvertFrom-Json | select "ipAddress"
+```
+
+**Command Breakdown:**
+
+- `az network public-ip show`: Retrieves public IP information
+- `-g`: Resource group name
+- `-n`: Public IP resource name (usually `<vm-name>-ip`)
+- `| ConvertFrom-Json`: Converts JSON output to PowerShell object
+- `| select "ipAddress"`: Extracts only the IP address value
+
+**Important Notes:**
+
+- Public IP resource typically named `<VM-name>-ip`
+- JSON conversion needed for PowerShell processing
+- Case-sensitive: `"ipAddress"` (lowercase 'i', uppercase 'A')
+
+##### 3. Connect to VM Using SSH Key
+
+```bash
+ssh -i .\.ssh\<key-filename>.pub azureuser@<IP-ADDRESS>
+```
+
+**Example:**
+
+```bash
+ssh -i .\.ssh\1677784226_5817175.pub azureuser@4.154.67.226
+```
+
+**Key Points:**
+
+- `-i`: Specifies identity file (private key)
+- Path to private key file in `.ssh` directory
+- `azureuser`: Default username (or your specified username)
+- Use the IP address obtained from step 2
+
+##### 4. Upload Existing SSH Key to Azure
+
+```bash
+az sshkey create -g sbdemo0110 -n sbdemo0114-2 --public-key "@.\.ssh\<key-filename>.pub"
+```
+
+**Command Breakdown:**
+
+- Same `az sshkey create` command
+- `--public-key`: Specifies existing public key file
+- `@` symbol: Critical - tells Azure this is a file reference, not the key content
+- Must use public key file (.pub extension)
+
+**Important:**
+
+- The `@` symbol is crucial - without it, Azure interprets the path as the actual key content
+- Only uploads public key to Azure
+- No private key is generated or returned
+- Existing private key remains on local system
+
+#### Key Concepts
+
+##### SSH Key Management in Azure
+
+- **Public Key**: Stored in Azure and on local system
+- **Private Key**: Only stored on local system (never shared)
+- **Key Names**: Can be different from VM names
+- **Resource Groups**: Best practice to store keys in same RG as VM
+
+##### File Permissions (Linux Systems)
+
+- Microsoft recommends changing private key permissions on Linux
+- Use `chmod` utility to secure private key file
+- Not required for Windows systems in this demo
+
+##### Public IP Naming Convention
+
+- Default pattern: `<VM-name>-ip`
+- Can be customized during VM creation
+- Must match exact name when querying
+
+#### Security Best Practices
+
+##### Key Management
+
+- Delete resource groups after demos to remove keys
+- Keep private keys secure and never share
+- Use proper file permissions on Linux systems
+- Regularly rotate SSH keys for production systems
+
+##### Connection Security
+
+- Always use SSH keys instead of passwords when possible
+- Verify IP addresses before connecting
+- Use `exit` command to properly close SSH sessions
+- Monitor SSH access logs
+
+#### Quick Reference Commands
+
+```bash
+# Create new SSH key in Azure
+az sshkey create -g <resource-group> -n <key-name>
+
+# Get VM public IP
+az network public-ip show -g <resource-group> -n <public-ip-name> | ConvertFrom-Json | select "ipAddress"
+
+# Connect via SSH
+ssh -i <path-to-private-key> <username>@<ip-address>
+
+# Upload existing public key
+az sshkey create -g <resource-group> -n <key-name> --public-key "@<path-to-public-key>"
+
+# Exit SSH session
+exit
+```
+
+#### Troubleshooting Tips
+
+##### Common Issues
+
+- **Permission Denied**: Check private key file permissions
+- **Key Not Found**: Verify file path and extension (.pub for public key)
+- **Connection Timeout**: Verify IP address and network security group rules
+- **Authentication Failed**: Ensure using correct private key file
+
+##### File Path Issues
+
+- Windows: Use `.\` for current directory
+- Backslashes in Windows paths: `\.ssh\`
+- Forward slashes in Linux paths: `/.ssh/`
+
+##### JSON Conversion Problems
+
+- Ensure `ConvertFrom-Json` is properly capitalized
+- Check for proper pipe symbols `|`
+- Verify JSON output format from Azure CLI
+
+#### Comparison: Create vs Upload
+
+| Method              | Command                                                     | Use Case           | Output                       |
+| ------------------- | ----------------------------------------------------------- | ------------------ | ---------------------------- |
+| **Create New**      | `az sshkey create -g <rg> -n <name>`                        | Need new key pair  | Both private and public keys |
+| **Upload Existing** | `az sshkey create -g <rg> -n <name> --public-key "@<file>"` | Have existing keys | Confirmation only            |
+
+#### Best Practices Summary
+
+- Store SSH keys in same resource group as VM
+- Use descriptive names for key resources
+- Always use `@` symbol when referencing key files
+- Clean up demo resources to remove keys
+- Test connectivity after key creation
+- Keep private keys secure and local-only
+
+##### Summarize the key concepts covered in this course
 
 ## 1.2 Resource Manager Templates
 
