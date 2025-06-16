@@ -484,3 +484,31 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 ### Summarize the concepts covered in this course
 
 ## 5.3 Message-based solutions
+
+### Discover the key concepts covered in this course
+
+### Provide an overview of Azure Service Bus
+
+### Create, manage, and use queues to send and receive messages.
+
+### Implement Azure Service Bus and Queue Storage to build more powerful messaging solutions
+
+### Identify the different messaging patterns available in Azure Service Bus
+
+### Outline Service Bus Security
+
+### Use Service Bus conjunction with Event Grid to build event-driven architectures
+
+### Use Service Bus and Azure Functions together to build serverless messaging solutions
+
+### Use Service Bus and Logic Apps together to build workflows and automate business processes
+
+### Use Service Bus and Power Automate together to automate business processes
+
+### Use Service Bus in conjunction with Azure Stream Analytics to build data processing solutions
+
+### Outline Queue Storage scalability and performance
+
+### Outline the use of Service Bus and Queue Storage monitoring
+
+### Summarize the key concepts covered in this course.
