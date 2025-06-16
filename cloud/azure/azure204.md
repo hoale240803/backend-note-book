@@ -455,4 +455,32 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 5.2 Azure Event Grid
 
+### Discover they key concepts covered in this course
+
+### Describe the concepts of Azure Event Grid
+
+### Identify the different types of events that can be handled by Azure Event Grid
+
+### Create and manage event subscriptions in Azure Event Grid
+
+### Create custom topics and event types in Azure Event Grid
+
+### Filter events based on specific criteria, such as event type or data
+
+### Route events to different handlers such as Azure Functions or Logic Apps
+
+### Configure dead lettering for event subscriptions
+
+### Authenticate and authorize access to events and event handlers
+
+### Replay events and configure event replay for event subscriptions
+
+### Use Azure Event Grid and Azure Functions to create and manage event-triggered Azure Functions
+
+### Use Event Grid with Logic Apps to create and manage event-triggered Logic Apps
+
+### Use Event Grid with Events Hub to create and manage event-triggered Event Hubs
+
+### Summarize the concepts covered in this course
+
 ## 5.3 Message-based solutions
