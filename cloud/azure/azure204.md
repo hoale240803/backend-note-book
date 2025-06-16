@@ -341,6 +341,32 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ## 4.1 Application Configuration
 
+### Discover the key concepts covered in this course
+
+### Outline Azure App Configuration
+
+### Set up and manage a configuration storeIdentify the structure and organization of key-value pairs
+
+### Organize key-value pairs using labels and hierarchy
+
+### Implement role-based access control (RBAC) to secure access to the configuration store
+
+### use the Azure App Configuration SDK and API to access the configuration store
+
+### Use the Azure App Configuration service to manage feature flags in applications
+
+### Manage Configuration as Code using Azure DevOps
+
+### Set up automatic refresh policies to keep applications in sync with the configuration store
+
+### Store and manage secrets in the Azure App Configuration service
+
+### Monitor the usage and performance of the configuration store
+
+### Set up a hig availability configuration store across multiple regions
+
+### Summarize the key concepts covered in this course
+
 ## 4.2 Caching in Azure
 
 ## 4.3 Application Troubleshooting
