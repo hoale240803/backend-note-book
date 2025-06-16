@@ -10,9 +10,172 @@ In this track of the az-204: Developing Solutions for Microsoft Azure journey, t
 
 ### Discover the key concepts covered in this course
 
+- Create and manage Azure VMs using a variety of tools and techniques, including the Azure CLI, Azure Portal, and Azure PowerShell
+
+- Learn about the basics of Azure VMs and how to create and configure both Linux and Windows VMs in Azure.
+
+- Discuss how to connect to your VMs using various methods, including SSH and Secure Shell(SSH) on Linux VMs and Remote Desktop Protocol(RDP) on Windows VMs.
+
+- Cover how to use SSH public-private key pairs
+
 ### Outline the use of virtual machines (VMs) in Azure
 
+- Virtualization/emulation of a physical computer system. E.g a digital version of a physical computer
+
+- Runs on an isolated partition of its host computer with its own CPU, memory, network interface, and storage.
+
+- Ideal when seeking more control over the computing environment
+
+- Enables virtualization without having to purchase or maintain the physical hardware used to operate virtual machines
+
+- Configuring, Patching, Installing
+
+**Use cases**
+
+- Development & testing
+- Applications
+- Datacenter
+
+**Considerations**
+
+- Resource locations
+- Virtual machine sizes
+- Maximum number of virtual machines
+- Virtual machine configuration(s)
+
+**Locations to create or access resources**
+
+- Azure portal
+- Azure PowerShell
+- Azure CLI
+- REST API
+
+**Availability**
+
+- Availability zones
+- Virtual machine scale sets
+
+**Pricing Factors**
+
+- Processing power: the more cpu, thee more the cost.
+- Memory: the same processing power
+- Storage capacity: larger is more expensive
+- Network bandwidth
+
+**Core Limitations**
+
+- The main quota is that you can have a maximum of 20 VMs per subscription
+
+**Managed data disks**
+
+- CLI, PowerShell
+
 ### Create a Linux VM with Azure CLI
+
+Azure Linux VM Demo Summary
+This guide summarizes the key steps and takeaways from a demo on creating a Linux VM using Azure CLI, installing an Nginx web server, and verifying its functionality by accessing it via a browser.
+Key Takeaways
+Prerequisites
+
+Active Azure subscription with appropriate permissions.
+Latest Azure CLI installed (Azure CLI Installation).
+PowerShell or terminal for running Azure CLI commands.
+SSH client for VM access.
+
+Step-by-Step Process
+
+Log in to Azure CLI:
+
+Command: `az login`
+Action: Authenticate via browser to connect CLI to your Azure account.
+Note: Ensure you're logged in for all CLI operations.
+
+Create a Resource Group:
+
+Command: `az group create --name sbdemo0103 --location eastus`
+Purpose: Create a logical container (sbdemo0103) in the eastus region for Azure resources.
+Tip: Choose a region close to your location.
+
+![Created Group Resource](image.png)
+
+Create a Linux VM:
+
+Command:
+
+```
+az vm create \
+ --resource-group sbdemo0103 \
+ --name sbdemo0103 \
+ --image debian \
+ --admin-username azureuser \
+ --generate-ssh-keys \
+ --public-ip-sku Standard
+ --size Standard_B1s
+ --location eastus
+```
+
+Details:
+Creates a Debian-based VM named sbdemo0103 in the sbdemo0103 resource group.
+Uses azureuser as the admin username.
+Generates SSH keys for secure access.
+Assigns a standard public IP address.
+
+Output: Save the public IP address (e.g., 20.124.50.242) for later use.
+
+Install Nginx Web Server:
+
+Command:
+
+```
+az vm run-command invoke \
+ --resource-group sbdemo0103 \
+ --name sbdemo0103 \
+ --command-id RunShellScript \
+ --scripts "sudo apt-get update && sudo apt-get install -y nginx"
+```
+
+Purpose: Runs a shell script on the VM to update packages and install Nginx.
+
+![installed nginx](image-1.png)
+Open Port 80:
+
+Command: `az vm open-port --resource-group sbdemo0103 --name sbdemo0103 --port 80`
+Purpose: Allows HTTP traffic to the VM to access the Nginx web server.
+
+Verify Web Server:
+
+Action: Open a browser and navigate to the VM’s public IP (e.g., http://20.124.50.242).
+Expected Result: Displays the "Welcome to nginx!" page, confirming the VM and web server are operational.
+
+![opened port 80](image-2.png)
+![worked](image-3.png)
+Clean Up Resources:
+
+Command: `az group delete --name sbdemo0103 --no-wait --yes --verbose`
+Purpose: Deletes the resource group and all associated resources (VM, public IP, etc.) to avoid costs.
+Note: Deletion may take a few minutes.
+
+Additional Notes
+
+Resource Group: Acts as a logical folder for organizing Azure resources.
+SSH Keys: Automatically generated during VM creation for secure Linux VM access.
+Public IP: Essential for external access to the VM (e.g., via SSH or browser).
+Cost Management: Always delete unused resources to prevent unnecessary charges.
+
+Quick Reference
+
+Login: az login
+Resource Group: `az group create --name <name> --location <region>`
+
+Create VM: `az vm create --resource-group <name> --name <vm-name> --image debian --admin-username <username> --generate-ssh-keys --public-ip-sku Standard`
+
+Install Software: `az vm run-command invoke --resource-group <name> --name <vm-name> --command-id RunShellScript --scripts "<linux-commands>"`
+
+Open Port: `az vm open-port --resource-group <name> --name <vm-name> --port 80`
+
+Delete Resources: `az group delete --name <name> --no-wait --yes --verbose`
+
+For detailed documentation, refer to Azure Virtual Machines.
 
 ### Create a Linux VM with Azure portal
 
