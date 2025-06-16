@@ -324,6 +324,164 @@ Remove-AzResourceGroup -Name <rg-name>
 
 ### Create a Window VM with Azure CLI
 
+#### Prerequisites
+
+- Azure CLI installed and configured
+- Azure account with appropriate permissions
+- PowerShell or command prompt access
+
+#### Step-by-Step Process
+
+##### 1. Create Resource Group
+
+```bash
+az group create -n sbdemo0106 --location eastus
+```
+
+**Key Points:**
+
+- Resource group = logical container for resources
+- `-n`: Name parameter (short form)
+- `--location`: Azure region for deployment
+- Choose location close to your region for better performance
+
+##### 2. Create Windows VM
+
+```bash
+az vm create -g sbdemo0106 -n sbdemo0106 --image Win2019Datacenter --admin-username azureuser --public-ip-sku Standard --size Standard_B1s
+```
+
+**Command Breakdown:**
+
+- `-g`: Resource group name (short form of `--resource-group`)
+- `-n`: VM name (short form of `--name`)
+- `--image`: OS image (Win2019Datacenter)
+- `--admin-username`: Administrator account name
+- `--public-ip-sku`: Public IP type (Standard)
+- `--size Standard_B1s`: Size of VM
+
+**During Creation:**
+
+- Prompts for administrator password: SuperPa$$w0rd
+- Confirm password
+- Process takes several minutes
+- **Important**: Save the public IP address from output
+
+![alt text](image-4.png)
+
+##### 3. Install Web Server on VM
+
+```bash
+az vm run-command invoke -g sbdemo0106 -n sbdemo0106 --command-id RunPowerShellScript --scripts "Install-WindowsFeature -name Web-Server -IncludeManagementTools"
+```
+
+**Key Points:**
+
+- Uses `vm run-command invoke` to execute commands remotely
+- `--command-id RunPowerShellScript`: Specifies PowerShell execution
+- `Install-WindowsFeature`: Windows PowerShell command to install IIS
+- `-name Web-Server`: Installs Internet Information Services (IIS)
+- `-IncludeManagementTools`: Includes management tools for IIS
+
+![alt text](image-5.png)
+
+##### 4. Open Port 80 for Web Traffic
+
+```bash
+az vm open-port -g sbdemo0106 -n sbdemo0106 --port 80
+```
+
+**Important:**
+
+- Port 80 must be opened for HTTP web traffic
+- This modifies the Network Security Group (NSG) rules
+- Without this step, web server won't be accessible from internet
+
+![alt text](image-6.png)
+
+##### 5. Test the Web Server
+
+- Use the public IP address from step 2 output
+- Navigate to the IP address in your browser
+- Should see "Internet Information Services" default page
+- Confirms VM is working and web server is accessible
+
+##### 6. Clean Up Resources
+
+```bash
+az group delete -n sbdemo0106
+```
+
+- Deletes the entire resource group and all contained resources
+- Confirm deletion when prompted (type 'y')
+- Prevents ongoing charges for unused resources
+
+#### Important Notes
+
+##### Azure CLI Syntax
+
+- Uses lowercase commands with hyphens
+- Short forms available: `-g` for `--resource-group`, `-n` for `--name`
+- Parameter values are case-sensitive (e.g., `Win2019Datacenter`, `Standard`)
+
+##### Windows VM Specifics
+
+- Default image: Windows Server 2019 Datacenter
+- Uses PowerShell for remote command execution
+- IIS (Internet Information Services) as the web server
+- Requires password authentication for admin user
+
+##### Network Configuration
+
+- Public IP created automatically
+- Port 80 must be explicitly opened for web access
+- Network Security Group rules are modified automatically
+
+##### Security Considerations
+
+- Administrator username and password required
+- Public IP exposes VM to internet
+- Only necessary ports should be opened
+- Always clean up test resources
+
+#### Quick Reference Commands
+
+```bash
+# Create resource group
+az group create -n <resource-group-name> --location <location>
+
+# Create Windows VM
+az vm create -g <resource-group> -n <vm-name> --image Win2019Datacenter --admin-username <username> --public-ip-sku Standard
+
+# Install web server
+az vm run-command invoke -g <resource-group> -n <vm-name> --command-id RunPowerShellScript --scripts "Install-WindowsFeature -name Web-Server -IncludeManagementTools"
+
+# Open port 80
+az vm open-port -g <resource-group> -n <vm-name> --port 80
+
+# Delete resource group
+az group delete -n <resource-group-name>
+```
+
+#### Comparison with Linux VM Creation
+
+| Aspect          | Windows VM                   | Linux VM                 |
+| --------------- | ---------------------------- | ------------------------ |
+| Image           | `Win2019Datacenter`          | `Ubuntu2204` or `Debian` |
+| Authentication  | Username/Password            | SSH Keys (preferred)     |
+| Web Server      | IIS (Install-WindowsFeature) | Nginx/Apache (apt-get)   |
+| Remote Commands | RunPowerShellScript          | RunShellScript           |
+| Default Ports   | 3389 (RDP), 80 (HTTP)        | 22 (SSH), 80 (HTTP)      |
+
+#### Best Practices
+
+- Always note the public IP address during VM creation
+- Test connectivity before installing software
+- Open only necessary ports for security
+- Use strong passwords for Windows VMs
+- Clean up resources immediately after testing
+- Consider using parameter files for complex deployments
+
 ### Create a Window VM with Azure portal
 
 ### Create a Window VM with Azure PowerShell
