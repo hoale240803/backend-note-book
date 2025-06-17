@@ -1472,6 +1472,131 @@ This demo successfully demonstrates the complete lifecycle of Azure Container Re
 
 ### Deploy a container instance using Azure CLI
 
+This demo demonstrates how to deploy a container instance using the Azure CLI from PowerShell. The tutorial covers the complete workflow from authentication to cleanup.
+
+#### Prerequisites
+
+- Latest version of Azure CLI installed
+- Access to Azure subscription
+- PowerShell environment
+
+#### Step-by-Step Process
+
+##### 1. Authentication
+
+```bash
+az login
+```
+
+- Redirects to browser for authentication
+- Select appropriate Azure account
+- Confirms successful login to Azure subscription
+
+##### 2. Create Resource Group
+
+```bash
+az group create -n sbdemo0403 --location eastus
+```
+
+**Parameters:**
+
+- `-n sbdemo0403`: Resource group name (customizable)
+- `--location eastus`: Azure region (customizable based on location)
+
+**Note:** Container instances are Azure resources that must be placed in a resource group.
+
+##### 3. Create Container Instance
+
+```bash
+az container create -g sbdemo0403 -n sbdemo0403 --image mcr.microsoft.com/azuredocs/aci-helloworld --dns-name-label sbdemo0403 --ports 80
+```
+
+**Parameters Breakdown:**
+
+- `-g sbdemo0403`: Target resource group
+- `-n sbdemo0403`: Container instance name
+- `--image mcr.microsoft.com/azuredocs/aci-helloworld`: Microsoft sample Hello World image
+- `--dns-name-label sbdemo0403`: DNS label for URL generation
+- `--ports 80`: Exposed port for web access
+
+##### 4. Verify Deployment
+
+```bash
+az container show -g sbdemo0403 -n sbdemo0403 --query "{FQDN: ipAddress.fqdn, ProvisioningState: provisioningState}" --out table
+```
+
+**Query Components:**
+
+- `FQDN: ipAddress.fqdn`: Retrieves the fully qualified domain name
+- `ProvisioningState: provisioningState`: Shows deployment status
+- `--out table`: Formats output as a table
+
+**Expected Output:**
+
+- FQDN: `sbdemo0403.eastus.azurecontainer.io`
+- ProvisioningState: `Succeeded`
+
+##### 5. Test the Application
+
+- Copy the FQDN from the previous command
+- Navigate to the URL in a web browser
+- Verify the "Welcome to Azure Container Instances!" page loads successfully
+
+##### 6. Cleanup Resources
+
+```bash
+az group delete -n sbdemo0403
+```
+
+- Prompts for confirmation (y/n)
+- Deletes the resource group and all contained resources
+- Removes the container instance automatically
+
+#### Key Concepts
+
+##### Azure Container Instances (ACI)
+
+- Serverless container hosting service
+- No infrastructure management required
+- Suitable for simple applications and demos
+
+##### Resource Organization
+
+- All Azure resources must belong to a resource group
+- Resource groups act as logical containers
+- Deleting a resource group removes all contained resources
+
+##### DNS and Networking
+
+- DNS name labels create publicly accessible URLs
+- Format: `{dns-label}.{region}.azurecontainer.io`
+- Port 80 enables standard HTTP access
+
+#### Best Practices Demonstrated
+
+1. **Authentication First**: Always authenticate with Azure before running commands
+2. **Resource Grouping**: Organize related resources in the same group
+3. **Naming Consistency**: Use consistent naming across related resources
+4. **Verification**: Always verify deployment status before testing
+5. **Cleanup**: Remove resources when no longer needed to avoid charges
+
+#### Command Reference Summary
+
+| Command               | Purpose                            |
+| --------------------- | ---------------------------------- |
+| `az login`            | Authenticate with Azure            |
+| `az group create`     | Create resource group              |
+| `az container create` | Deploy container instance          |
+| `az container show`   | Display container information      |
+| `az group delete`     | Remove resource group and contents |
+
+#### Additional Notes
+
+- The demo uses a Microsoft-provided Hello World container image
+- The container serves a static HTML page
+- Resource cleanup is essential for cost management
+- Location selection can be optimized for performance and compliance
+
 ### Deploy a container instance using Azure Portal
 
 ### Deploy a container instance using Azure PowerShell
