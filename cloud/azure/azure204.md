@@ -1075,8 +1075,72 @@ Use the **Azure Portal** to generate, review, and optionally deploy an **ARM (JS
     "storageAccountId": { ... }
   }
 }
+```
 
 ### Create and deploy a template spec
+
+#### 1. Create a Template Spec via Azure CLI
+
+##### az login
+
+```
+az login
+
+```
+
+##### Create a resource group for Spec
+
+```
+az group create -n specrg --location eastus
+```
+
+##### Create the template the spec
+
+```
+az ts create \
+  -g specrg \
+  -n storageSpec \
+  --version "1.0" \
+  --location eastus \
+  --template-file .\azuredeploy.json
+
+```
+
+### 3. Deploy resources from the template Spec
+
+#### Create a Deployment Resource Group
+
+```
+az group create -n deployrg --location eastus
+
+```
+
+#### Get the Template Spec Id
+
+```
+$id = az ts show -g specrg -n storageSpec --version "1.0" --query "id"
+
+echo $id
+
+```
+
+#### Deploy the Template Spec
+
+```
+az deployment group create \
+  -g deployrg \
+  --template-spec $id \
+  --parameters storageAccountName='sbdemo0206'
+
+```
+
+### Final verification
+
+- Open Azure Portal → `Resource Groups`
+
+- Open `deployrg`
+
+- Confirm presence of `sbdemo0206` storage account
 
 ### Implement deployment scripts to your deployment by using parameters and outputs
 
@@ -1538,4 +1602,7 @@ Use the **Azure Portal** to generate, review, and optionally deploy an **ARM (JS
 ### Outline the use of Service Bus and Queue Storage monitoring
 
 ### Summarize the key concepts covered in this course.
+
+```
+
 ```
