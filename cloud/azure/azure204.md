@@ -1607,6 +1607,216 @@ az group delete -n sbdemo0403
 
 ### Deploy a container instance using Docker CLI
 
+This demo shows how to deploy an Azure Container Instance using the Docker CLI. Unlike the Azure CLI approach, Docker CLI uses contexts to manage Azure resources and handles resource groups differently.
+
+#### Prerequisites (Docker CLI)
+
+- Latest version of Docker CLI installed
+- Docker Desktop (for Windows users)
+- Access to Azure subscription
+- PowerShell environment
+
+#### Step-by-Step Process (Docker CLI)
+
+##### 1. Authentication
+
+```bash
+docker login azure
+```
+
+- Redirects to browser for Azure authentication
+- Select appropriate Azure account
+- Confirms successful login to Azure subscription
+
+##### 2. Create Docker Context
+
+```bash
+docker context create aci sbdemo0408
+```
+
+**What this does:**
+
+- Creates a new Docker context for Azure Container Instances
+- `aci`: Specifies Azure Container Instance context type
+- `sbdemo0408`: Custom context name
+- Prompts to create or select a resource group
+- Auto-generates resource group name with GUID if creating new
+
+**Important Note:** Docker CLI doesn't allow custom resource group naming during context creation. The resource group gets a GUID-based name.
+
+##### 3. Use the Context
+
+```bash
+docker context use sbdemo0408
+```
+
+- Activates the specified context
+- Subsequent Docker commands will target Azure Container Instances
+
+##### 4. Run Container Instance
+
+```bash
+docker run -p 80:80 mcr.microsoft.com/azuredocs/aci-helloworld
+```
+
+**Parameters:**
+
+- `-p 80:80`: Maps port 80 from container to host port 80
+- `mcr.microsoft.com/azuredocs/aci-helloworld`: Microsoft sample Hello World image
+
+**Process:**
+
+- Creates container instance in Azure
+- Pushes the sample image to the instance
+- Starts listening on port 80
+
+##### 5. List Running Containers
+
+```bash
+docker ps
+```
+
+- Shows all containers Docker is aware of
+- Displays container names, IP addresses, and status
+- Use this to get the public IP address
+
+##### 6. Test the Application
+
+- Copy the IP address from `docker ps` output
+- Navigate to the IP address in a web browser
+- Verify the "Welcome to Azure Container Instances!" page loads successfully
+
+##### 7. Cleanup Resources
+
+```bash
+docker stop <container-name>
+docker rm <container-name>
+```
+
+**Example:**
+
+```bash
+docker stop loving-margulis
+docker rm loving-margulis
+```
+
+**Important Limitation:** Docker CLI cleanup only removes the container instance, not the resource group. You must use Azure CLI or Azure Portal to delete the resource group.
+
+#### Key Concepts
+
+##### Azure Container Instances (ACI)
+
+- Serverless container hosting service
+- No infrastructure management required
+- Suitable for simple applications and demos
+
+##### Azure CLI vs Docker CLI Approach
+
+###### Azure CLI
+
+- **Resource Management**: Direct control over resource groups and naming
+- **Authentication**: Uses `az login`
+- **Container Creation**: Explicit resource group creation required
+- **Networking**: Uses DNS labels for friendly URLs
+- **Cleanup**: Complete resource group deletion removes everything
+
+###### Docker CLI
+
+- **Resource Management**: Uses contexts as abstraction layer
+- **Authentication**: Uses `docker login azure`
+- **Container Creation**: Resource groups auto-created with GUID names
+- **Networking**: Uses IP addresses for access
+- **Cleanup**: Limited to container instances only
+
+##### Docker Contexts
+
+- Internal reference objects in Docker CLI
+- Enable Docker to work with different deployment targets
+- ACI contexts specifically target Azure Container Instances
+- Must be activated with `docker context use` before deployment
+
+##### Resource Organization
+
+- All Azure resources must belong to a resource group
+- Resource groups act as logical containers
+- Deleting a resource group removes all contained resources
+
+##### DNS and Networking
+
+- DNS name labels create publicly accessible URLs
+- Format: `{dns-label}.{region}.azurecontainer.io`
+- Port 80 enables standard HTTP access
+
+#### Best Practices Demonstrated
+
+##### Azure CLI Approach
+
+1. **Authentication First**: Always authenticate with Azure before running commands
+2. **Resource Grouping**: Organize related resources in the same group
+3. **Naming Consistency**: Use consistent naming across related resources
+4. **Verification**: Always verify deployment status before testing
+5. **Complete Cleanup**: Remove entire resource groups to avoid charges
+
+##### Docker CLI Approach
+
+1. **Context Management**: Create and use appropriate contexts for different environments
+2. **Resource Group Planning**: Create resource groups manually if naming is important
+3. **Container Lifecycle**: Properly stop and remove containers when done
+4. **Mixed Tool Usage**: Use Azure CLI/Portal for complete resource group cleanup
+
+#### Command Reference Summary
+
+##### Azure CLI Commands
+
+| Command               | Purpose                            |
+| --------------------- | ---------------------------------- |
+| `az login`            | Authenticate with Azure            |
+| `az group create`     | Create resource group              |
+| `az container create` | Deploy container instance          |
+| `az container show`   | Display container information      |
+| `az group delete`     | Remove resource group and contents |
+
+##### Docker CLI Commands
+
+| Command                     | Purpose                                      |
+| --------------------------- | -------------------------------------------- |
+| `docker login azure`        | Authenticate with Azure                      |
+| `docker context create aci` | Create Azure Container Instance context      |
+| `docker context use`        | Activate specified context                   |
+| `docker run`                | Deploy and run container instance            |
+| `docker ps`                 | List running containers and get IP addresses |
+| `docker stop`               | Stop running container                       |
+| `docker rm`                 | Remove container instance                    |
+
+#### Additional Notes
+
+##### Azure CLI Approach
+
+- The demo uses a Microsoft-provided Hello World container image
+- The container serves a static HTML page
+- Resource cleanup is essential for cost management
+- Location selection can be optimized for performance and compliance
+- DNS labels provide user-friendly URLs
+
+##### Docker CLI Approach
+
+- Docker CLI is not Azure-specific but can integrate with Azure
+- Context-based approach abstracts Azure resource management
+- Resource group names are auto-generated with GUIDs
+- IP-based access instead of DNS labels
+- Incomplete cleanup capability requires additional tools
+- Familiar Docker commands work with Azure infrastructure
+
+#### Tool Comparison
+
+| Feature                    | Azure CLI                          | Docker CLI                 |
+| -------------------------- | ---------------------------------- | -------------------------- |
+| **Resource Group Control** | Full control with custom naming    | Auto-generated GUID names  |
+| **Learning Curve**         | Azure-specific commands            | Familiar Docker commands   |
+| **Access Method**          | DNS labels (user-friendly URLs)    | IP addresses               |
+| **Cleanup**                | Complete (resource group deletion) | Partial (container only)   |
+| **Best For**               | Azure-native workflows             | Docker-familiar developers |
+
 ### Run a docker container with an Azure container instance
 
 ### Deploy a multi-container group using YAML
