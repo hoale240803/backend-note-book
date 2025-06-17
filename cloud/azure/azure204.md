@@ -2415,6 +2415,140 @@ This process successfully demonstrates how to set up continuous deployment from 
 
 ### Deploy Azure App SErvice using Azure Pipelines
 
+I understand you want me to summarize the provided lecture on "Deploying a Web App with Azure Pipeline" in Markdown format.
+
+Here's the summary:
+
+# Deploying a Web App with Azure Pipeline
+
+Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers creating a simple ARM template with Bicep and configuring an Azure DevOps pipeline to provision resources, build, and deploy code.
+
+---
+
+## 1. Setting up the Azure DevOps Repository
+
+1.  **Navigate to Azure DevOps:** Open Azure DevOps in your browser.
+2.  **Create a New Repository:**
+    - Click "Repos" in the left-hand menu.
+    - Click the "+" icon next to the repository name and select "New repository."
+    - Name the repository (e.g., `sbdemo0605`) and click "Create."
+
+---
+
+## 2. Creating the ARM Template (Bicep File)
+
+1.  **Create a New Bicep File:**
+    - In the repo explorer, click the three dots next to the repository name.
+    - Select "New" then "File."
+    - Name the file `sbdemo0605.bicep`.
+2.  **Define Parameters:** Add the following parameters at the top of the Bicep file:
+    ```bicep
+    param resourceName string
+    param location string = resourceGroup().location
+    ```
+3.  **Define App Service Plan:** Add the resource definition for the App Service Plan:
+    ```bicep
+    resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+      name: resourceName
+      location: location
+      sku: {
+        name: 'F1' // Free tier
+      }
+    }
+    ```
+4.  **Define App Service:** Add the resource definition for the App Service, referencing the App Service Plan:
+    ```bicep
+    resource appService 'Microsoft.Web/sites@2022-03-01' = {
+      name: resourceName
+      location: location
+      properties: {
+        serverFarmId: appServicePlan.id
+      }
+    }
+    ```
+5.  **Commit the Bicep File:** Click the "Commit" button at the top of the editor, accept the default message, and commit the file to the repository.
+
+---
+
+## 3. Configuring the Azure Pipeline
+
+1.  **Set up a New Pipeline:**
+    - Click on the repository name at the top of the repo explorer.
+    - Click "Set up build" in the top right corner.
+    - Select "Starter pipeline."
+2.  **Add Pipeline Steps (YAML):**
+
+    - The YAML file defines the pipeline. Remove the existing `script` block.
+    - Add tasks to provision the Azure Resource Group and the Azure Resources (App Service and Plan) using the Bicep file. This leverages the `AzureCLI@2` task.
+    - **Note:** This pipeline requires a pre-configured Azure Service Connection in Azure DevOps with sufficient permissions. The `$(ServiceConnection)`, `$(ResourceGroupName)`, `$(Location)`, and `$(ResourceName)` are pipeline variables that would need to be defined.
+
+    ```yaml
+    # Existing default YAML content would be here, usually starting with 'trigger:' and 'pool:'.
+    # You would add your steps under the 'steps:' section.
+
+    steps:
+      - task: AzureCLI@2
+        displayName: Provision Azure Resource Group
+        inputs:
+          azureSubscription: $(ServiceConnection)
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            az group create -n $(ResourceGroupName) --location '$(Location)'
+
+      - task: AzureCLI@2
+        displayName: Provision Azure Resources
+        inputs:
+          azureSubscription: $(ServiceConnection)
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            az deployment group create -g $(ResourceGroupName) `
+            --template-file 'sbdemo0605.bicep' `
+            --parameters resourceName='$(ResourceName)'
+
+      # Example tasks for building and deploying code (provided in the demo for completeness)
+      # These tasks would typically follow the resource provisioning tasks
+      - task: DotNetCoreCLI@2
+        displayName: "Build .NET App"
+        inputs:
+          command: "build"
+          projects: "**/*.csproj"
+          arguments: "--configuration Release"
+
+      - task: DotNetCoreCLI@2
+        displayName: "Publish .NET App"
+        inputs:
+          command: "publish"
+          publishWebProjects: true
+          arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
+          zipAfterPublish: true
+
+      - task: AzureWebApp@1
+        displayName: "Deploy Azure Web App"
+        inputs:
+          azureSubscription: $(ServiceConnection)
+          appName: "$(ResourceName)" # Assuming App Service name is same as ResourceName variable
+          package: "$(Build.ArtifactStagingDirectory)/**/*.zip"
+    ```
+
+3.  **Save the Pipeline:**
+    - Click "Save and run" at the top of the screen.
+    - In the pop-up, confirm the commit message for the pipeline definition and click "Save and run."
+
+---
+
+## 4. Running and Understanding the Pipeline
+
+- The pipeline will start running. In this demo, it's expected to fail because the necessary variables and service connection were not actually configured.
+- This demonstrates the process: the pipeline definition itself is saved as code in the repository, allowing for version control of your deployment process.
+- Once variables (ResourceGroupName, Location, ResourceName) and a valid `ServiceConnection` (linking Azure DevOps to your Azure subscription with appropriate permissions) are provided, this pipeline can successfully:
+  - Create an Azure Resource Group.
+  - Deploy the App Service Plan and App Service using the Bicep ARM template.
+  - Build, publish, and deploy your web application code to the provisioned App Service.
+
+---
+
 ### Deploy microservices predictively in Azure
 
 ### Connect to Azure App Service using managed identity
