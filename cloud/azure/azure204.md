@@ -941,7 +941,140 @@ ARM templates are the **de facto standard** for Azure resource management, provi
 
 ### Create JSON templates with Visual Studio
 
+a demonstration is provided on how to create an Azure Resource Manager (ARM) template using Visual Studio Code (VS Code) with the Bicep language, which is then compiled into a JSON template. The demo focuses on creating a simple ARM template to deploy an Azure storage account, covering key components like variables, parameters, resources, tags, and outputs. It highlights the use of Bicep for easier template creation and the process of compiling it to JSON for comparison. This is part of a course preparing learners for the AZ-204: Developing Solutions for Microsoft Azure certification exam.
+
+#### Key Steps and Concepts:
+
+- **Setup**:
+
+  - Open VS Code and access a project folder (e.g., `CLDSAZ2302`) created previously with the Bicep plug-in installed.
+  - Create a new Bicep file named `azuredeploy.bicep` in the project folder via the Explorer panel.
+
+- **Creating the ARM Template in Bicep**:
+
+  - **Variable**: Define a variable `storageAccountName` with the value `'sbdemo0204'`. VS Code flags unused variables (underlined) to ensure proper usage.
+  - **Resource Definition**:
+    - Define a storage account resource named `storageAccount` using the `Microsoft.Storage/storageAccounts` resource type (version 2022-09-01).
+    - Set properties:
+      - `name`: Reference the `storageAccountName` variable.
+      - `location`: Initially hardcoded as `'EastUS'`, later replaced with a parameter.
+      - `sku`: Set to `Standard_LRS` (Locally Redundant Storage).
+      - `kind`: Set to `StorageV2`.
+  - **Parameter**:
+    - Add a `location` parameter with a default value tied to the resource group’s location (`resourceGroup().location`) to avoid hardcoding, resolving the underlined location error.
+    - Replace the hardcoded `'EastUS'` with the `location` parameter.
+  - **Tags**:
+    - Add tags for better resource management and billing queries:
+      - `environment: 'dev'`
+      - `business_unit: 'connectivity'`
+  - **Output**:
+    - Define an output `accountName` to return the `storageAccountName` value after deployment.
+  - Save the file (`Ctrl+S`).
+
+- **Compiling Bicep to JSON**:
+
+  - Compile the Bicep file to JSON using `Ctrl+Shift+B` or by right-clicking the file and selecting "Build ARM Template."
+  - This generates a new file, `azuredeploy.json`, in the Explorer panel.
+  - The JSON file includes:
+    - Metadata about the file.
+    - Parameters section with the `location` parameter.
+    - Variables section with `storageAccountName`.
+    - Resources section defining the storage account.
+    - Outputs section with the `accountName` output.
+
+- **Key Features Highlighted**:
+
+  - **Bicep Advantages**: Bicep simplifies ARM template creation with a more readable syntax and features like autocomplete in VS Code, making complex templates easier to manage.
+  - **VS Code Support**: The Bicep plug-in provides autocomplete, error detection (e.g., unused variables, hardcoded locations), and compilation to JSON.
+  - **JSON Comparison**: The compiled JSON closely mirrors the Bicep file but is more verbose, reinforcing Bicep’s ease of use for complex templates.
+
+- **Code Example** (Bicep):
+  ```bicep
+  param location string = resourceGroup().location
+  var storageAccountName = 'sbdemo0204'
+  resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+    name: storageAccountName
+    location: location
+    sku: {
+      name: 'Standard_LRS'
+    }
+    kind: 'StorageV2'
+    tags: {
+      environment: 'dev'
+      business_unit: 'connectivity'
+    }
+  }
+  output accountName string = storageAccountName
+  ```
+
+#### Course Context:
+
+- The demo emphasizes practical ARM template creation using VS Code and Bicep, with hands-on steps to build, validate, and compile templates.
+- It prepares learners for the AZ-204 exam by demonstrating real-world Azure resource management techniques.
+
 ### Create JSON templates with Azure Portal
+
+**Objective:**  
+Use the **Azure Portal** to generate, review, and optionally deploy an **ARM (JSON) template** using built-in quickstart templates.
+
+---
+
+#### 🧰 Tools Used
+
+- Azure Portal (https://portal.azure.com)
+
+---
+
+#### 🪜 Step-by-Step Instructions
+
+##### 1. Access the Custom Template Feature
+
+- Go to Azure Portal
+- In the **search bar**, type:  
+  `deploy a custom template`
+- Click **"Deploy a custom template"** from the results
+
+---
+
+##### 2. Load a Quickstart Template
+
+- On the "Custom deployment" screen:
+  - Choose **"Quickstart template"** as the source
+  - In the dropdown, search for:  
+    `storage-account-create`
+  - Select: `microsoft.storage/storage-account-create`
+- Click **Edit template**
+
+---
+
+##### 3. Review the Auto-Generated JSON Template
+
+- The editor displays a **JSON ARM template**
+- Key elements in the template:
+
+```jsonc
+{
+  // Metadata at the top
+  "parameters": {
+    "location": { ... },
+    "storageAccountName": { ... },
+    ...
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-09-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": { "name": "Standard_LRS" },
+      "kind": "StorageV2"
+    }
+  ],
+  "outputs": {
+    "storageAccountName": { ... },
+    "storageAccountId": { ... }
+  }
+}
 
 ### Create and deploy a template spec
 
@@ -1405,3 +1538,4 @@ ARM templates are the **de facto standard** for Azure resource management, provi
 ### Outline the use of Service Bus and Queue Storage monitoring
 
 ### Summarize the key concepts covered in this course.
+```
