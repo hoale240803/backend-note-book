@@ -2318,6 +2318,101 @@ In this demo, we deployed a local ZIP file to an **Azure App Service** using **A
 
 ### Sync content from Github to Azure App Service
 
+This lecture, presented by Sven Batalla, demonstrates how to sync content from a GitHub repository to an Azure App Service, enabling continuous deployment.
+
+---
+
+#### Setting up the GitHub Repository
+
+1.  **Create a New Repository:**
+
+    - Navigate to GitHub and click "New" to create a new repository.
+    - Name the repository (e.g., `sbdemo0604`).
+    - Check "Add a README file" to ensure it's not empty.
+    - Click "Create repository."
+
+2.  **Clone the Repository Locally:**
+
+    - Copy the repository's URL from the address bar.
+    - Open PowerShell and use the `git clone` command followed by the copied URL:
+      ```powershell
+      git clone https://github.com/svenbatalla/sbdemo0604
+      ```
+    - Navigate into the newly created directory:
+      ```powershell
+      cd sbdemo0604
+      ```
+    - Ensure you are on the main branch:
+      ```powershell
+      git branch -m main
+      ```
+
+3.  **Create and Publish a Dummy Website:**
+
+    - Create a new .NET web app within the repository directory:
+      ```powersershell
+      dotnet new webapp -n sbdemo0604 -f net6.0 -o .
+      ```
+    - Publish the application:
+      ```powershell
+      dotnet publish
+      ```
+
+4.  **Commit and Push Changes to GitHub:**
+    - Add all new content to the staging area:
+      ```powershell
+      git add -A
+      ```
+    - Commit the changes with a message:
+      ```powershell
+      git commit -m "first commit"
+      ```
+    - Push the local commits to the GitHub repository:
+      ```powershell
+      git push origin main
+      ```
+
+---
+
+#### Creating and Connecting the Azure App Service
+
+1.  **Create a New Web App in Azure Portal:**
+
+    - Go to the Azure portal.
+    - Click "Create a resource" and select "Web App."
+
+2.  **Configure Web App Details:**
+
+    - **Resource Group:** Create a new resource group (e.g., `sbdemo0604`) and click "OK."
+    - **Name:** Give your App Service a name (e.g., `sbdemo0604`).
+    - **Runtime Stack:** Select ".NET 6" (or the appropriate runtime for your app).
+    - Click "Next: Deployment."
+
+3.  **Enable Continuous Deployment with GitHub Actions:**
+    - Under the "Deployment" tab, click "Enable" for **GitHub Actions**.
+    - If you haven't connected Azure to GitHub before, you'll be prompted to authorize the connection.
+    - In the "GitHub Actions details" section, select your GitHub **Organization**, the **Repository** (`sbdemo0604`), and the **Branch** (`main`).
+    - Click "Review + create," and then "Create" after validation passes.
+
+---
+
+#### Verifying and Cleaning Up
+
+1.  **Verify Deployment:**
+
+    - Once the App Service is deployed, click "Go to resource."
+    - On the App Service's overview page, click the "Default domain" link in the top right to open your deployed website.
+
+2.  **Monitor GitHub Actions:**
+
+    - Go back to your GitHub repository and click on the "Actions" tab. You'll see a record of the deployment action, indicating that any future code changes pushed to this repository will automatically trigger a deployment to your Azure App Service.
+
+3.  **Clean Up Resources:**
+    - In the Azure portal, navigate to the **Resource group** associated with your App Service (e.g., `sbdemo0604`).
+    - Click "Delete resource group," enter the resource group's name to confirm, and then click "Delete."
+
+This process successfully demonstrates how to set up continuous deployment from GitHub to an Azure App Service, streamlining the process of updating your web applications.
+
 ### Deploy Azure App SErvice using Azure Pipelines
 
 ### Deploy microservices predictively in Azure
