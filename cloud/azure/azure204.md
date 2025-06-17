@@ -2415,17 +2415,11 @@ This process successfully demonstrates how to set up continuous deployment from 
 
 ### Deploy Azure App SErvice using Azure Pipelines
 
-I understand you want me to summarize the provided lecture on "Deploying a Web App with Azure Pipeline" in Markdown format.
-
-Here's the summary:
-
-# Deploying a Web App with Azure Pipeline
-
 Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers creating a simple ARM template with Bicep and configuring an Azure DevOps pipeline to provision resources, build, and deploy code.
 
 ---
 
-## 1. Setting up the Azure DevOps Repository
+#### 1. Setting up the Azure DevOps Repository
 
 1.  **Navigate to Azure DevOps:** Open Azure DevOps in your browser.
 2.  **Create a New Repository:**
@@ -2435,7 +2429,7 @@ Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers
 
 ---
 
-## 2. Creating the ARM Template (Bicep File)
+#### 2. Creating the ARM Template (Bicep File)
 
 1.  **Create a New Bicep File:**
     - In the repo explorer, click the three dots next to the repository name.
@@ -2470,7 +2464,7 @@ Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers
 
 ---
 
-## 3. Configuring the Azure Pipeline
+#### 3. Configuring the Azure Pipeline
 
 1.  **Set up a New Pipeline:**
     - Click on the repository name at the top of the repo explorer.
@@ -2538,7 +2532,7 @@ Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers
 
 ---
 
-## 4. Running and Understanding the Pipeline
+#### 4. Running and Understanding the Pipeline
 
 - The pipeline will start running. In this demo, it's expected to fail because the necessary variables and service connection were not actually configured.
 - This demonstrates the process: the pipeline definition itself is saved as code in the repository, allowing for version control of your deployment process.
@@ -2572,6 +2566,31 @@ Demonstrates how to deploy an Azure App Service using Azure Pipelines. It covers
 ### Discover the key concepts covered in this course
 
 ### Provide an overview of Azure Functions
+
+#### Scenarios
+
+- Web APIs
+- File uploads
+- Serverless workflows
+- Realtime data
+- Task scheduling
+- Database changes
+
+#### Automated Deployments
+
+- Tool-based approach
+- External pipelines
+
+#### Troubleshooting functions
+
+- Monitoring tools
+- Testing strategies
+
+#### Pricing options
+
+- App Service plan
+- Consumption plans
+- Premium plans
 
 ### Improve performance add reliability of Azure Functions by implementing best practices
 
