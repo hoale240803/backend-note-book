@@ -2085,6 +2085,62 @@ az group delete -n sbdemo0505
 
 ### Create a custom container in Azure App Service
 
+##### 1. Create Resource Group
+
+- First step is always creating a resource group to contain all Azure resources
+- **Command used:**
+  ```bash
+  az group create -n sbdemo0511 --location eastus
+  ```
+
+##### 2. Create App Service Plan
+
+- Unlike previous demos that used shortcuts, this explicitly creates the required App Service plan
+- **Command:**
+  ```bash
+  az appservice plan create -g sbdemo0511 -n sbdemo0511 --hyper-v --sku p1v3
+  ```
+- Uses **Hyper-V** virtual machine with **P1v3 SKU** (production tier) instead of the free F1 tier used in previous demos
+- Production SKU is **required** for running containers
+
+##### 3. Deploy Container to App Service
+
+- Creates the web app (App Service) and deploys a container simultaneously
+- **Command:**
+  ```bash
+  az webapp create -g sbdemo0511 -n sbdemo0511 --plan sbdemo0511 --deployment-container-image-name mcr.microsoft.com/azure-app-service/windows/parkingpage:latest
+  ```
+- Uses a sample Microsoft container image as the deployment source
+
+##### 4. Validation
+
+- Verified the deployment by browsing to `sbdemo0511.azurewebsites.net`
+- Successfully displayed the parking app container
+
+##### 5. Cleanup
+
+- Deleted the entire resource group to clean up all created resources
+- **Command:**
+  ```bash
+  az group delete -n sbdemo0511
+  ```
+
+#### Key Takeaways
+
+- ✅ **Containers require production-tier App Service plans** (not free tier)
+- ✅ **The Azure CLI provides a straightforward way** to deploy containers to App Service
+- ✅ **All resources are organized within resource groups** for easy management and cleanup
+- ✅ **The process involves creating infrastructure first**, then deploying the container application
+
+#### Command Summary
+
+| Step | Command                                                                                                                                                           | Purpose                           |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| 1    | `az group create -n sbdemo0511 --location eastus`                                                                                                                 | Create resource group             |
+| 2    | `az appservice plan create -g sbdemo0511 -n sbdemo0511 --hyper-v --sku p1v3`                                                                                      | Create App Service plan           |
+| 3    | `az webapp create -g sbdemo0511 -n sbdemo0511 --plan sbdemo0511 --deployment-container-image-name mcr.microsoft.com/azure-app-service/windows/parkingpage:latest` | Create App Service with container |
+| 4    | `az group delete -n sbdemo0511`                                                                                                                                   | Clean up resources                |
+
 ### Enable diagnostic logging for apps in Azure App Service
 
 ### Summarize the key concepts covered in this course
