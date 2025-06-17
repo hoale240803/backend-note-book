@@ -1134,7 +1134,7 @@ az deployment group create \
 
 ```
 
-### Final verification
+#### Final verification
 
 - Open Azure Portal → `Resource Groups`
 
@@ -1165,6 +1165,127 @@ az deployment group create \
 ### Create a container registry using Azure portal
 
 ### Create a private container registry using Azure CLI
+
+This demonstration shows how to create an Azure Container Registry using the Azure CLI as an alternative to the Azure Portal approach covered in the previous demo.
+
+### Prerequisites
+
+- Azure CLI installed and running latest version
+- PowerShell or command line interface access
+- Azure subscription with appropriate permissions
+
+### Step-by-Step Process
+
+#### 1. Azure Authentication
+
+First, authenticate with Azure using the login command:
+
+```bash
+az login
+```
+
+**Process:**
+
+- Command opens web browser for authentication
+- Select your Azure account
+- Browser confirms successful login
+- Return to command line interface
+
+#### 2. Create Resource Group
+
+Before creating the Container Registry, a resource group is required:
+
+```bash
+az group create -n sbdemo0304 --location eastus
+```
+
+**Command breakdown:**
+
+- `az group create`: Creates new resource group
+- `-n sbdemo0304`: Names the resource group
+- `--location eastus`: Specifies deployment region
+
+#### 3. Create Container Registry
+
+Create the Azure Container Registry within the resource group:
+
+```bash
+az acr create -g sbdemo0304 -n sbdemo0304 --sku Basic
+```
+
+**Command breakdown:**
+
+- `az acr create`: Creates new Azure Container Registry
+- `-g sbdemo0304`: Specifies resource group name
+- `-n sbdemo0304`: Names the container registry
+- `--sku Basic`: Sets pricing tier (Basic for cost efficiency)
+
+#### 4. Registry Login
+
+Authenticate to the newly created registry for image operations:
+
+```bash
+az acr login -n sbdemo0304
+```
+
+**Purpose:**
+
+- Enables pushing and pulling container images
+- Required before any registry operations
+- Uses registry name for authentication
+
+### Key Registry Information
+
+#### Login Server Property
+
+The command output includes a `loginServer` property which provides:
+
+- Registry's login server name
+- Essential for registry interactions
+- Alternative to using registry name depending on operation type
+
+### Cleanup Process
+
+Remove all created resources to avoid ongoing charges:
+
+```bash
+az group delete -n sbdemo0304
+```
+
+**Effect:**
+
+- Deletes the entire resource group
+- Automatically removes the Container Registry
+- Confirms deletion before execution
+
+---
+
+#### Summary
+
+This demo successfully demonstrates creating an Azure Container Registry using just **two primary commands**: resource group creation and registry creation. The Azure CLI provides a streamlined, scriptable approach to registry deployment compared to the portal interface.
+
+#### Key Points
+
+- Azure CLI offers efficient command-line alternative to portal-based registry creation
+- Resource group creation is prerequisite for Container Registry deployment
+- Basic SKU provides cost-effective option for development and testing scenarios
+- Registry login is required before performing push/pull operations
+- Cleanup through resource group deletion removes all associated resources
+
+#### Important Commands
+
+- **Authentication**: `az login` - Connect to Azure account
+- **Resource Group**: `az group create` - Create container for resources
+- **Registry Creation**: `az acr create` - Deploy Container Registry
+- **Registry Access**: `az acr login` - Authenticate to registry
+- **Cleanup**: `az group delete` - Remove all resources
+
+#### Questions/Notes
+
+- What are the differences between Basic, Standard, and Premium SKUs?
+- How does CLI authentication compare to service principal authentication?
+- Can registry creation be automated through scripts or CI/CD pipelines?
+- What are the networking considerations for private registries?
 
 ### Create a private container registry using Azure powershell
 
@@ -1317,8 +1438,6 @@ az deployment group create \
 ### Run a Azure function from an HTTP request
 
 ### Register Azure function biding extensions
-
-### Use binding expressions in an Azure function
 
 ### Use binding expressions in an Azure function
 
