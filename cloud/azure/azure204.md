@@ -2149,7 +2149,129 @@ az group delete -n sbdemo0505
 
 ### Discover they key concepts covered in this course
 
+- Cover how to deploy and configure Azure Web Apps using a variety of tools and techniques
+
+- Learn how to deploy web apps to Azure App Service using ZIP packages and Azure Pipelines
+
+- Cover how to sync content from GitHUb and deploy microservices to Azure app Service.
+
+- Introduce managed identities, app authentication, and custom domain names in Azure App Service, and how to use digital security certificates to secure your web apps
+
 ### Run your app in Azure App Service from a ZIP package
+
+This demonstration shows how to configure an existing Azure App Service to run a web application directly from a ZIP file instead of uploading individual files. This approach significantly improves CI/CD performance by reducing deployment time.
+
+#### Benefits of ZIP Package Deployment
+
+- **Faster Deployment:** Uploading a single ZIP file is much faster than uploading multiple individual files
+- **Improved CI/CD Performance:** Streamlines the deployment process
+- **Native Support:** Azure App Service has built-in support for running from ZIP packages
+
+#### Step-by-Step Process
+
+##### 1. Azure Authentication
+
+```bash
+az login
+```
+
+Follow the browser authentication flow to sign in to your Azure account.
+
+##### 2. Create Resource Group
+
+```bash
+az group create -n sbdemo0602 --location eastus
+```
+
+##### 3. Create App Service Plan
+
+```bash
+az appservice plan create -g sbdemo0602 -n sbdemo0602 --sku F1
+```
+
+- Uses the free tier (F1 SKU)
+- Creates the plan in the previously created resource group
+
+##### 4. Create Web App
+
+```bash
+az webapp create -g sbdemo0602 -p sbdemo0602 -n sbdemo0602
+```
+
+##### 5. Create Sample Application
+
+```bash
+dotnet new webapp -n sbdemo0602 -f net6.0
+cd sbdemo0602
+```
+
+##### 6. Publish the Application
+
+```bash
+dotnet publish -o out
+cd out
+```
+
+This creates a deployable version of the application in the `out` folder.
+
+##### 7. Configure App Service for ZIP Package
+
+```bash
+az webapp config appsettings set -g sbdemo0602 -n sbdemo0602 --settings WEBSITE_RUN_FROM_PACKAGE="1"
+```
+
+**Key Setting:** `WEBSITE_RUN_FROM_PACKAGE="1"` enables the App Service to run directly from a ZIP package.
+
+##### 8. Create ZIP Package
+
+```powershell
+Compress-Archive -Path * -DestinationPath sbdemo0602.zip
+```
+
+Compresses all files in the output folder into a single ZIP file.
+
+##### 9. Deploy ZIP Package
+
+```bash
+az webapp deployment source config-zip -g sbdemo0602 -n sbdemo0602 --src .\sbdemo0602.zip
+```
+
+Uploads and deploys the ZIP file to the Azure App Service.
+
+##### 10. Test the Deployment
+
+Navigate to: `https://sbdemo0602.azurewebsites.net`
+
+##### 11. Clean Up Resources
+
+```bash
+az group delete -n sbdemo0602
+```
+
+Deletes the entire resource group and all associated resources.
+
+#### Key Commands Reference
+
+| Action                  | Command                                                                    |
+| ----------------------- | -------------------------------------------------------------------------- |
+| Login to Azure          | `az login`                                                                 |
+| Create Resource Group   | `az group create -n [name] --location [location]`                          |
+| Create App Service Plan | `az appservice plan create -g [group] -n [name] --sku [tier]`              |
+| Create Web App          | `az webapp create -g [group] -p [plan] -n [name]`                          |
+| Configure ZIP Package   | `az webapp config appsettings set --settings WEBSITE_RUN_FROM_PACKAGE="1"` |
+| Deploy ZIP              | `az webapp deployment source config-zip --src [zipfile]`                   |
+| Delete Resource Group   | `az group delete -n [name]`                                                |
+
+#### Important Notes
+
+- The `WEBSITE_RUN_FROM_PACKAGE` setting must be set to `"1"` to enable ZIP package execution
+- All resources were created in the same resource group for easy cleanup
+- The demonstration used .NET 6.0 framework
+- The free tier (F1) was used for cost-effective demonstration
+
+#### Conclusion
+
+This method provides a streamlined approach to deploying web applications to Azure App Service, offering improved performance and simplified CI/CD processes through ZIP package deployment.
 
 ### Deploy your code as a ZIP file to Azure App Service
 
