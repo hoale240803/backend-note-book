@@ -2275,6 +2275,47 @@ This method provides a streamlined approach to deploying web applications to Azu
 
 ### Deploy your code as a ZIP file to Azure App Service
 
+In this demo, we deployed a local ZIP file to an **Azure App Service** using **Azure CLI** commands that leverage the **Kudu publish API**.
+
+#### Steps Covered
+
+##### 1. **Login to Azure**
+
+- Use `az login` to authenticate with Azure.
+
+##### 2. **Create Azure Resources**
+
+- **Resource Group:** `az group create -n sbdemo0603 --location eastus`
+- **App Service Plan:** `az appservice plan create -g sbdemo0603 -n sbdemo0603 --sku F1`
+- **App Service:** `az webapp create -g sbdemo0603 -p sbdemo0603 -n sbdemo0603`
+
+##### 3. **Prepare Web App for Deployment**
+
+- Generate a sample .NET web app: `dotnet new webapp -n sbdemo0603 -f net6.0`
+- Publish the web app: `dotnet publish -o out`
+- Compress the output folder into a ZIP file: `Compress-Archive -Path * -DestinationPath sbdemo0603.zip`
+
+##### 4. **Deploy ZIP File to Azure**
+
+- Upload the ZIP using the Kudu publish API:  
+  `az webapp deploy -g sbdemo0603 -n sbdemo0603 --src-path .\sbdemo0603.zip`
+
+##### 5. **Test the Deployment**
+
+- Access the deployed web app at:  
+  `https://sbdemo0603.azurewebsites.net`
+
+##### 6. **Cleanup Resources**
+
+- Delete the resource group:  
+  `az group delete -n sbdemo0603`
+
+#### Key Takeaways
+
+- The **Kudu publish API** automates ZIP deployment without explicit configuration.
+- The ZIP file can be **hosted remotely** and accessed via HTTP.
+- Cleaning up is simplified by **removing the resource group**.
+
 ### Sync content from Github to Azure App Service
 
 ### Deploy Azure App SErvice using Azure Pipelines
