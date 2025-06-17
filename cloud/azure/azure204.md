@@ -1841,6 +1841,238 @@ docker rm loving-margulis
 
 ### Deploy a ASP.NET web app to Azure App Service
 
+This demo demonstrates how to create a .NET web application locally, test it, and deploy it to Azure App Service using the Azure CLI. The tutorial covers the complete development lifecycle from local creation to cloud deployment and updates.
+
+### Prerequisites
+
+- Azure CLI installed and configured
+- .NET SDK installed on your system
+- Access to Azure subscription
+- PowerShell environment
+- Text editor (Notepad or similar)
+
+### Step-by-Step Process
+
+#### 1. Project Setup
+
+```bash
+# Create and navigate to project directory
+mkdir sbdemo
+cd sbdemo
+```
+
+#### 2. Create .NET Web Application
+
+```bash
+dotnet new webapp -n sbdemo0505 -f net6.0
+```
+
+**Parameters:**
+
+- `new webapp`: Creates a new web application template
+- `-n sbdemo0505`: Names the project "sbdemo0505"
+- `-f net6.0`: Specifies .NET 6.0 framework
+
+**Result:** Creates a new folder with the web application project files.
+
+#### 3. Navigate to Project Directory
+
+```bash
+cd sbdemo0505
+```
+
+#### 4. Test Local Development
+
+```bash
+dotnet run --urls=https://localhost:5001
+```
+
+**What happens:**
+
+- Builds the web application
+- Starts a local development server
+- Makes the app available at `https://localhost:5001`
+
+**Testing:**
+
+- Open browser and navigate to `https://localhost:5001`
+- Verify the default ASP.NET welcome page loads
+- Stop the server with `Ctrl+C`
+
+#### 5. Azure Authentication
+
+```bash
+az login
+```
+
+- Redirects to browser for Azure authentication
+- Select appropriate Azure account
+- Confirms successful login
+
+#### 6. Create Resource Group
+
+```bash
+az group create -n sbdemo0505 --location eastus
+```
+
+**Parameters:**
+
+- `-n sbdemo0505`: Resource group name
+- `--location eastus`: Azure region (customizable)
+
+#### 7. Deploy Web App to Azure
+
+```bash
+az webapp up -g sbdemo0505 -n sbdemo0505 --sku F1 --os-type windows
+```
+
+**Parameters Breakdown:**
+
+- `-g sbdemo0505`: Target resource group
+- `-n sbdemo0505`: Web app name
+- `--sku F1`: Free pricing tier (no cost)
+- `--os-type windows`: Operating system (can be Linux)
+
+**What this command does:**
+
+- Creates an Azure App Service
+- Packages the current directory's web app
+- Deploys the application to Azure
+- Provides a public URL upon completion
+
+#### 8. Test Deployed Application
+
+**Expected Output URL Format:**
+
+```
+http://sbdemo0505.azurewebsites.net
+```
+
+- Copy the URL from command output
+- Navigate to the URL in browser
+- Verify the web app loads successfully in the cloud
+
+#### 9. Update Application
+
+```bash
+notepad pages/index.cshtml
+```
+
+**Make changes:**
+
+- Edit the welcome text (e.g., "Welcome - THIS IS A TEST")
+- Save and close the file
+
+#### 10. Deploy Updates
+
+```bash
+az webapp up
+```
+
+**Notes:**
+
+- Uses the same command as initial deployment
+- Azure CLI remembers previous configuration
+- Automatically deploys changes from current directory
+- No need to specify parameters again
+
+#### 11. Verify Updates
+
+- Refresh the browser page
+- Confirm changes are reflected in the live application
+
+#### 12. Cleanup Resources
+
+```bash
+az group delete -n sbdemo0505
+```
+
+- Prompts for confirmation
+- Deletes the entire resource group
+- Removes all associated resources (web app, app service plan, etc.)
+
+### Key Concepts
+
+#### Azure App Service
+
+- Platform-as-a-Service (PaaS) offering for web applications
+- Supports multiple programming languages and frameworks
+- Handles infrastructure management automatically
+- Provides built-in scaling, security, and monitoring
+
+#### .NET Web App Development
+
+- Uses ASP.NET Core framework
+- Template-based project creation
+- Local development and testing capabilities
+- Cross-platform compatibility
+
+#### Azure CLI Web App Commands
+
+- `az webapp up`: Simplified deployment command
+- Handles app service plan creation automatically
+- Remembers configuration for subsequent deployments
+- Combines multiple operations in a single command
+
+##### Pricing Tiers (SKU)
+
+| SKU | Name     | Description                      | Cost         |
+| --- | -------- | -------------------------------- | ------------ |
+| F1  | Free     | Basic hosting, limited resources | Free         |
+| D1  | Shared   | Shared infrastructure            | Low cost     |
+| B1  | Basic    | Dedicated compute                | Medium cost  |
+| S1  | Standard | Production workloads             | Higher cost  |
+| P1  | Premium  | High performance                 | Highest cost |
+
+#### Best Practices Demonstrated
+
+1. **Local Testing First**: Always test applications locally before deployment
+2. **Consistent Naming**: Use consistent names across resources for organization
+3. **Free Tier Usage**: Start with free tiers for development and testing
+4. **Resource Grouping**: Keep related resources in the same resource group
+5. **Iterative Development**: Use simple update commands for continuous deployment
+6. **Complete Cleanup**: Remove all resources to avoid unexpected charges
+
+#### Command Reference
+
+| Command             | Purpose                            |
+| ------------------- | ---------------------------------- |
+| `dotnet new webapp` | Create new web application project |
+| `dotnet run`        | Run application locally            |
+| `az login`          | Authenticate with Azure            |
+| `az group create`   | Create resource group              |
+| `az webapp up`      | Deploy web application             |
+| `az group delete`   | Remove resource group and contents |
+
+#### Workflow Summary
+
+1. **Develop** → Create and test .NET web app locally
+2. **Authenticate** → Log into Azure CLI
+3. **Prepare** → Create resource group for deployment
+4. **Deploy** → Push application to Azure App Service
+5. **Validate** → Test deployed application
+6. **Iterate** → Make changes and redeploy as needed
+7. **Cleanup** → Remove resources when finished
+
+#### Additional Notes
+
+- The demo uses .NET 6.0 framework
+- F1 SKU provides free hosting with limitations
+- Azure App Service automatically handles HTTPS
+- The `az webapp up` command simplifies the deployment process
+- Subsequent deployments are faster as infrastructure already exists
+- Web apps get automatic URLs in the format: `{app-name}.azurewebsites.net`
+- Resource group cleanup removes all associated costs
+- The approach works for various .NET application types (MVC, Web API, etc.)
+
+#### Troubleshooting Tips
+
+- Ensure .NET SDK is properly installed and in PATH
+- Verify Azure CLI authentication before deployment
+- Check that resource group names are unique within subscription
+- Monitor deployment output for error messages
+- Use Azure Portal to verify resource creation if needed
+
 ### Create a Node.js web app in Azure App Service
 
 ### Create a PHP web app in Azure App Service
