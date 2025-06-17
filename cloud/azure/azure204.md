@@ -1168,15 +1168,15 @@ az deployment group create \
 
 This demonstration shows how to create an Azure Container Registry using the Azure CLI as an alternative to the Azure Portal approach covered in the previous demo.
 
-### Prerequisites
+#### Prerequisites
 
 - Azure CLI installed and running latest version
 - PowerShell or command line interface access
 - Azure subscription with appropriate permissions
 
-### Step-by-Step Process
+#### Step-by-Step Process
 
-#### 1. Azure Authentication
+###### 1. Azure Authentication
 
 First, authenticate with Azure using the login command:
 
@@ -1191,7 +1191,7 @@ az login
 - Browser confirms successful login
 - Return to command line interface
 
-#### 2. Create Resource Group
+##### 2. Create Resource Group
 
 Before creating the Container Registry, a resource group is required:
 
@@ -1205,7 +1205,7 @@ az group create -n sbdemo0304 --location eastus
 - `-n sbdemo0304`: Names the resource group
 - `--location eastus`: Specifies deployment region
 
-#### 3. Create Container Registry
+##### 3. Create Container Registry
 
 Create the Azure Container Registry within the resource group:
 
@@ -1220,7 +1220,7 @@ az acr create -g sbdemo0304 -n sbdemo0304 --sku Basic
 - `-n sbdemo0304`: Names the container registry
 - `--sku Basic`: Sets pricing tier (Basic for cost efficiency)
 
-#### 4. Registry Login
+##### 4. Registry Login
 
 Authenticate to the newly created registry for image operations:
 
@@ -1302,6 +1302,163 @@ This demo successfully demonstrates creating an Azure Container Registry using j
 ### Create a Linux container app
 
 ### Push an image to your Azure container registry using Docker CLI
+
+This demonstration provides a complete end-to-end workflow for creating an Azure Container Registry, pushing container images, and managing the registry lifecycle using Azure CLI and Docker CLI.
+
+#### Prerequisites
+
+- Azure CLI installed and authenticated
+- Docker CLI installed and running
+- PowerShell or command line interface
+- Azure subscription with appropriate permissions
+
+#### Complete Workflow Steps
+
+##### 1. Create Resource Group
+
+Start by creating a resource group to contain the registry:
+
+```bash
+az group create -n sbdemo0312 --location eastus
+```
+
+##### 2. Create Container Registry
+
+Deploy the Azure Container Registry in the resource group:
+
+```bash
+az acr create -g sbdemo0312 -n sbdemo0312 --sku Basic
+```
+
+##### 3. Authenticate to Registry
+
+Log into the newly created registry for image operations:
+
+```bash
+az acr login -n sbdemo0312
+```
+
+**Note:** Two authentication methods available:
+
+- Azure CLI: `az acr login` (used in demo)
+- Docker CLI: `docker login` (alternative method)
+
+#### Working with Container Images
+
+##### 4. Pull Sample Image
+
+Download a public Microsoft NGINX image for demonstration:
+
+```bash
+docker pull mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine
+```
+
+##### 5. Test Local Image
+
+Verify the downloaded image works locally:
+
+```bash
+docker run -it --rm -p 8080:80 mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine
+```
+
+**Command breakdown:**
+
+- `-it`: Interactive terminal mode
+- `--rm`: Automatically remove container when stopped
+- `-p 8080:80`: Port mapping (host:container)
+
+**Verification:** Navigate to `localhost:8080` in browser to confirm NGINX welcome page
+
+##### 6. Tag Image for Registry
+
+Create a registry-specific tag for the image:
+
+```bash
+docker tag mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine sbdemo0312.azurecr.io/samples/nginx
+```
+
+**Purpose:**
+
+- Creates alias pointing to your registry
+- Required before pushing to private registry
+- Follows Azure Container Registry naming convention
+
+##### 7. Push Image to Registry
+
+Upload the tagged image to your Azure Container Registry:
+
+```bash
+docker push sbdemo0312.azurecr.io/samples/nginx
+```
+
+##### 8. Pull from Private Registry
+
+Retrieve the image from your registry to verify upload:
+
+```bash
+docker pull sbdemo0312.azurecr.io/samples/nginx
+```
+
+##### 9. Test Registry Image
+
+Confirm the registry image functions correctly:
+
+```bash
+docker run -it --rm -p 8080:80 sbdemo0312.azurecr.io/samples/nginx
+```
+
+**Verification:** Test again at `localhost:8080` to confirm functionality
+
+#### Cleanup Process
+
+##### 10. Delete Resources
+
+Remove all created resources to avoid ongoing charges:
+
+```bash
+az group delete -n sbdemo0312
+```
+
+**Effect:** Deletes resource group and all contained resources including the Container Registry
+
+---
+
+#### Summary
+
+This demo successfully demonstrates the complete lifecycle of Azure Container Registry operations, from creation through image management to cleanup. The workflow shows how Azure CLI and Docker CLI work together to provide comprehensive container registry management.
+
+#### Key Points
+
+- **End-to-end workflow** covers registry creation, image operations, and cleanup
+- **Two authentication methods** available: Azure CLI and Docker CLI
+- **Image tagging** is required before pushing to private registries
+- **Registry naming convention** follows `<registry-name>.azurecr.io/<repository>/<image>` format
+- **Local testing** validates images before and after registry operations
+- **Resource cleanup** prevents unnecessary Azure charges
+
+#### Important Commands
+
+- **Registry Creation**: `az acr create` - Deploy container registry
+- **Authentication**: `az acr login` - Access registry for operations
+- **Image Management**: `docker pull/push/tag` - Handle container images
+- **Local Testing**: `docker run` - Validate image functionality
+- **Cleanup**: `az group delete` - Remove all resources
+
+#### Docker CLI Integration
+
+##### Registry Operations
+
+- **Pull from public**: `docker pull <public-registry>/<image>`
+- **Tag for private**: `docker tag <source> <registry>.azurecr.io/<repo>/<image>`
+- **Push to private**: `docker push <registry>.azurecr.io/<repo>/<image>`
+- **Pull from private**: `docker pull <registry>.azurecr.io/<repo>/<image>`
+
+#### Questions/Notes
+
+- What are the security implications of using Basic SKU vs Premium?
+- How does image vulnerability scanning work with Azure Container Registry?
+- What are best practices for organizing repositories and tags?
+- How can this workflow be automated in CI/CD pipelines?
 
 ### Use the Azure container registry client libraries
 
