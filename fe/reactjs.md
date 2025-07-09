@@ -146,11 +146,11 @@ React Hooks là các hàm đặc biệt cho phép ta "móc nối" vào các tín
 - Custom hooks: Bạn có thể tự tạo các custom hooks để tái sử dụng logic stateful phức tạp giữa các component, giúp code gọn gàng và dễ quản lý hơn.
 - Ví dụ: useFetch, useLocalStorage.
 
-3. **useEffect hook hoạt động như thế nào?**
+#### **19. useEffect hook hoạt động như thế nào?**
 
-   - Dependency array: Quy định khi nào `useEffect` chạy lại (chỉ khi dependencies thay đổi)
-   - Cleanup functions: Hàm trả về từ `useEffect` để dọn dẹp (ví dụ: hủy timer subscription).
-   - Component lifecycle equivalent: Tương đương `componentDidMount`,`componentDidUpdate`, `componentWillUnmount`.
+- Dependency array: Quy định khi nào `useEffect` chạy lại (chỉ khi dependencies thay đổi)
+- Cleanup functions: Hàm trả về từ `useEffect` để dọn dẹp (ví dụ: hủy timer subscription).
+- Component lifecycle equivalent: Tương đương `componentDidMount`,`componentDidUpdate`, `componentWillUnmount`.
 
 ```jsx
 function App() {
@@ -163,11 +163,51 @@ function App() {
 }
 ```
 
-4. **Context API vs Redux**
+#### **20. Context API vs Redux**
 
-   - State management solutions
-   - Khi nào sử dụng Context API
-   - Redux pattern và middleware
+- Cả Context API và Redux đều là các giải pháp quảny lý trạng thái (state management) trong ứng dụng React, Nhưng chúng được thiết kế cho các trường hợp sử dụng khác nhau.
+
+- State management solutions (Giải pháp quản lý trạng thái):
+  - Cả hai đều giúp giải quyết vấn đề "prop drilling" (truyền props qua nhiều cấp component không liên quan) bằng cách cung cấp một cách để chia sẻ dữ liệu chung cho nhiều component.
+- Khi nào sử dụng Context API: - Dành cho dữ liệu "ít thay đổi" và "ít khi cập nhật": Context API lý tưởng cho việc chia sẻ dữ liệu như theme(sáng/tối), thông tin người dùng đang đăng nhập, cài đặt ngôn ngữ. - Redux pattern và middleware: Khi nhu cầu quản lý trạng thái không quá phức tạp và không đòi hỏi các tính năng nâng cao như middleware, time-travel debugging. - Ít boilerplate hơn: Context API có cú pháp đơn giản và ít cần cấu hình hơn so với Redux
+  - Ví dụ:
+
+```jsx
+// Tạo Context
+
+const ThemeContext = React.createContext("light");
+
+// Cung cấp giá trị
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+// Sử dụng giá trị
+function Toolbar() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button
+      style={{
+        background: theme === "dark" ? "black" : "white",
+        color: theme === "dark" ? "white" : "black",
+      }}
+    >
+      Current theme: {theme}
+    </button>
+  );
+}
+```
+
+- Redux pattern và middleware:
+  - Dành cho ứng dụng lớn, phức tạp: Redux phù hợp với các ứng dụng có trạng thái phức tạp, thường xuyên thay đổi và cần quản lý chặt chẽ.
+  - Centralized store (Kho lưu trữ tập trung): Redux sử dụng một "store" để lưu trữ toàn bộ trạng thái của ứng dụng.
+  - Centralized store changes(Thay đổi trạng thái có thể đự đoán): Mọi thay đổi trạng thái đều thông qua "actions" và "reducers" thuần túy, giúp dễ dàng theo dõi và debug.
+  - Middleware: Redux có hệ thống middleware mạnh mẽ cho phép bạn thêm logic vào quá trình gửi action(ví dụ: `redux-thunk` cho async operations, `redux-logger` để ghi nhật ký các thay đổi trạng thái).
+  - Boilerplate nhiều hơn: Redux yêu cầu nhiều code và cấu hình hơn so với Context API.
 
 5. **React component lifecycle**
 
