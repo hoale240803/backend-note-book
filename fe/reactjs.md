@@ -232,164 +232,236 @@ React component lifecycle là các giai đoạn khác nhau trong quá trình t�
   - useContext: Thay thế cho Context.Consumer và static contextType.
   - useReducer: Một lựa chọn thay thế cho `useState` cho các trường hợp state phực tạp hơn, tương tự như redux.
 
-6. **Controlled vs Uncontrolled components**
+#### **22. Controlled vs Uncontrolled components**
 
-   - Form handling
-   - Ref usage
-   - Best practices
+Cách React quản lý dữ liệu trong các phần tử Form(input, textarea, select) dẫn đến 2 loại component: Controlled và Uncontrolled.
+
+- Form handling(Xử lý form):
+  - Controlled Components:
+    - Các phần tử form mà giá trị của chúng được kiểm soát hoàn toàn bởi state của React.
+    - Mỗi khi giá tị input thay đổi, một event handler (ví dụ `onChange`) sẽ cập nhật state, và giá trị hiển thị của input luôn phản ánh giá trị trong state.
+    - Đây là cách được khuyến nghị trong hầu hết các trường hợp vì nó cho phép React quảny toàn bộ dữ liệu form, giúp dễ dàng validationm, reset form, và xử lý logic phức tạp.
+    - Ví dụ:
+
+```jsx
+import React, { useState } from "react";
+
+function ControlledForm() {
+  const [name, setName] = useState("");
+
+  const handleChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`Name submitted: ${name}`);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={name} onChange={handleChange} />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+- Uncontroled Components:
+
+  - Các phần tử form mà dữ liệu của chúng được quản lý bởi DOM thay vì bởi React state.
+  - Bạn sử dụng `refs` để truy cập trực tiếp vào DOM element và lấy giá trị của nó khi cần (ví dụ: khi submit form).
+  - Ít được sử dụng hơn Controlled Components vì mất đi một số lợi ích của React trong việc quản lý dữ liệu.
+
+  Ví dụ:
+
+```jsx
+import React, { useRef } from "react";
+
+function UncontrolledForm() {
+  const nameInputRef = useRef(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`Name submitted: ${nameInputRef.current.value}`);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" ref={nameInputRef} />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+- Ref usage(Sử dụng ref):
+  - `useRef` hook là cách phổ biến để tạo và sử dụng refs trong functional components.
+  - Refs được dùng để truy cập trực tiếp vào các DOM nodes hoặc các instance của component con.
+- Best practices:
+  - Thường xuyên ưu tiên sử dụng Controlled Components vì chúng cung cấp một luồng dữ liệu rõ ràng và dễ dự đoán hơn.
+  - Sử dụng Uncontrolled Components khi bạn cần tích hợp với thư viện DOM không phải của React, hoặc khi hiệu suất là yếu tố quan trọng và bạn không cần React render lại component sau lỗi lần gõ phím.
 
 7. **React Router**
 
-   - Client-side routing
-   - Route parameters
-   - Protected routes
+- Client-side routing
+- Route parameters
+- Protected routes
 
 8. **Higher-Order Components (HOC) vs Render Props**
 
-   - Pattern comparison
-   - Use cases
-   - Modern alternatives with hooks
+- Pattern comparison
+- Use cases
+- Modern alternatives with hooks
 
 9. **Memoization trong React**
 
-   - React.memo()
-   - useMemo vs useCallback
-   - Performance optimization
+- React.memo()
+- useMemo vs useCallback
+- Performance optimization
 
 10. **Error Boundaries trong React**
 
-    - Catching JavaScript errors
-    - Fallback UI
-    - Error reporting
+- Catching JavaScript errors
+- Fallback UI
+- Error reporting
 
 11. **Keys trong React lists**
 
-    - Tại sao cần keys
-    - Best practices
-    - Performance impact
+- Tại sao cần keys
+- Best practices
+- Performance impact
 
 12. **React.StrictMode là gì?**
 
-    - Development mode benefits
-    - Double rendering
-    - Deprecated API detection
+- Development mode benefits
+- Double rendering
+- Deprecated API detection
 
 13. **Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)**
 
-    - SEO implications
-    - Performance comparison
-    - Next.js framework
+- SEO implications
+- Performance comparison
+- Next.js framework
 
 14. **React performance optimization**
-    - Code splitting
-    - Lazy loading
-    - Bundle optimization
+
+- Code splitting
+- Lazy loading
+- Bundle optimization
 
 ### Tình huống React.js (15 câu)
 
 46. **Optimize React app có loading time chậm (5s)**
 
-    - Code splitting
-    - Lazy loading components
-    - Bundle analysis
-    - Image optimization
+- Code splitting
+- Lazy loading components
+- Bundle analysis
+- Image optimization
 
 47. **Xử lý form phức tạp với 50+ fields và validation**
 
-    - Form libraries (Formik, React Hook Form)
-    - Validation strategies
-    - Performance optimization
-    - User experience
+- Form libraries (Formik, React Hook Form)
+- Validation strategies
+- Performance optimization
+- User experience
 
 48. **Implement infinite scrolling cho danh sách 10,000 items**
 
-    - Virtual scrolling
-    - Pagination strategies
-    - Memory management
-    - Loading states
+- Virtual scrolling
+- Pagination strategies
+- Memory management
+- Loading states
 
 49. **State management cho large-scale application**
 
-    - Redux architecture
-    - State normalization
-    - Middleware usage
-    - Testing strategies
+- Redux architecture
+- State normalization
+- Middleware usage
+- Testing strategies
 
 50. **Implement real-time data updates trong React**
 
-    - WebSocket integration
-    - Socket.io client
-    - State synchronization
-    - Conflict resolution
+- WebSocket integration
+- Socket.io client
+- State synchronization
+- Conflict resolution
 
 51. **Debug React component re-render issues**
 
-    - React DevTools Profiler
-    - Unnecessary re-renders
-    - Memoization strategies
-    - Performance monitoring
+- React DevTools Profiler
+- Unnecessary re-renders
+- Memoization strategies
+- Performance monitoring
 
 52. **Implement responsive design cho mobile và desktop**
 
-    - CSS-in-JS solutions
-    - Media queries
-    - Touch interactions
-    - Performance considerations
+- CSS-in-JS solutions
+- Media queries
+- Touch interactions
+- Performance considerations
 
 53. **Xử lý error boundary cho production app**
 
-    - Error catching strategies
-    - Fallback UI design
-    - Error reporting
-    - Recovery mechanisms
+- Error catching strategies
+- Fallback UI design
+- Error reporting
+- Recovery mechanisms
 
 54. **Implement complex routing với authentication**
 
-    - Protected routes
-    - Route guards
-    - Dynamic routing
-    - Permission-based navigation
+- Protected routes
+- Route guards
+- Dynamic routing
+- Permission-based navigation
 
 55. **Optimize bundle size từ 5MB xuống 1MB**
 
-    - Tree shaking
-    - Code splitting
-    - Library optimization
-    - Asset optimization
+- Tree shaking
+- Code splitting
+- Library optimization
+- Asset optimization
 
 56. **Implement multi-language support (i18n)**
 
-    - Translation management
-    - Dynamic language switching
-    - Date/number formatting
-    - RTL support
+- Translation management
+- Dynamic language switching
+- Date/number formatting
+- RTL support
 
 57. **Testing strategy cho React application**
 
-    - Unit testing components
-    - Integration testing
-    - E2E testing
-    - Test coverage
+- Unit testing components
+- Integration testing
+- E2E testing
+- Test coverage
 
 58. **Implement PWA features**
 
-    - Service workers
-    - Offline functionality
-    - Push notifications
-    - App manifest
+- Service workers
+- Offline functionality
+- Push notifications
+- App manifest
 
 59. **Migrate class components sang functional components**
 
-    - Hook equivalents
-    - Lifecycle methods
-    - State management
-    - Testing updates
+- Hook equivalents
+- Lifecycle methods
+- State management
+- Testing updates
 
 60. **Implement complex data visualization**
-    - Chart libraries integration
-    - Performance with large datasets
-    - Interactive features
-    - Responsive charts
+
+- Chart libraries integration
+- Performance with large datasets
+- Interactive features
+- Responsive charts
 
 ## TIPS CHUẨN BỊ PHỎNG VẤN
 
@@ -408,3 +480,7 @@ React component lifecycle là các giai đoạn khác nhau trong quá trình t�
 - Demonstrate problem-solving process
 - Mention relevant tools và libraries
 - Show understanding of performance implications
+
+```
+
+```
