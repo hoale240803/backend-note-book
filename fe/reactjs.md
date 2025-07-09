@@ -56,83 +56,153 @@ return <ul>{items}</ul>;
 
 #### 17. **State vs Props trong React**
 
-    - Immutable props
-    - Mutable state
-    - Data flow trong components
+- Khái niệm cốt lõi của React để quản lý dữ liệu trong các component
+  - Immutable props(Props bất biến): - Props là dữ liệu được truyền từ component cha xuống component con. - Nghĩa là component con không thể trực tiếp thay đổi giá trị của props mà nó nhận được.
 
-18. **React Hooks là gì? Tại sao được tạo ra?**
+```js
+// Component cha
+function ParentComponent() {
+  const name = "Alice";
+  return <ChildComponent userName={name} />;
+}
 
-    - useState, useEffect, useContext
-    - Thay thế class components
-    - Custom hooks
+// Component con
+function ChildComponent(props) {
+  // props.userName là 'Alice' và không thể thay đổi trực tiếp ở đây
+  return <h1>Hello, {props.userName}</h1>;
+}
+```
 
-19. **useEffect hook hoạt động như thế nào?**
+    - Mutable state (State có thể thay đổi): State là dữ liệu được quản lý bên trong một component và có thể thay đổi theo thời gian.
+    - Nó là có thể thay đổi, nhưng việc thay đổi phải thông qua hàm `setState` (đối với class components) hoặc hàm setter cuar useState(đối với functional components) để React có thể nhận biết và render lại component.
+    ví dụ:
 
-    - Dependency array
-    - Cleanup functions
-    - Component lifecycle equivalent
+```jsx
+import React, { useState } from "react";
 
-20. **Context API vs Redux**
+function Counter() {
+  const [count, setCount] = useState(0); // count là state có thể thay đổi
 
-    - State management solutions
-    - Khi nào sử dụng Context API
-    - Redux pattern và middleware
+  const increment = () => {
+    setCount(count + 1); // Thay đổi state
+  };
 
-21. **React component lifecycle**
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+}
+```
 
-    - Mount, Update, Unmount phases
-    - Functional vs Class components
-    - Hooks equivalents
+- Data flow trong components (Luồng dữ liệu trong component):
+  - React có luồng dữ liệu một chiều(unidirectional data flow), từ trên xuống dưới (parent to child). Props luôn truyền từ cha xuống con.
+  - State chỉ thuộc về component mà chỉ nó được định nghĩa và có thể dược truyền xuống các compoennt con dưới dạng props
 
-22. **Controlled vs Uncontrolled components**
+1. Có cách nào để truyền dữ liệu từ con lên cha được không?
 
-    - Form handling
-    - Ref usage
-    - Best practices
+- Điều này là có thể bằng cahcs truyền callback function từ cha xuống con, và con sẽ gọi lại hàm đó khi cần gửi dữ liệu ngược lên.
 
-23. **React Router**
+```jsx
+function Parent() {
+  const handleDataFromChild = (data) => {
+    console.log("Dữ liệu từ con:", data);
+  };
 
-    - Client-side routing
-    - Route parameters
-    - Protected routes
+  return <Child onSendData={handleDataFromChild} />;
+}
+```
 
-24. **Higher-Order Components (HOC) vs Render Props**
+```jsx
+function Child({ onSendData }) {
+  return (
+    <button onClick={() => onSendData("Hello từ con")}>
+      Gửi dữ liệu lên cha
+    </button>
+  );
+}
+```
 
-    - Pattern comparison
-    - Use cases
-    - Modern alternatives with hooks
+Tóm tắt:
 
-25. **Memoization trong React**
+- Luồng dữ liệu mặc định: Cha - Con qua props
+- Dữ liệu từ con lên cha: Con gọi hàm được truyền từ cha xuống
+- React giữ unidirectional data flow nhưng vẫn linh hoạt qua pattern "lifting state up";
 
-    - React.memo()
-    - useMemo vs useCallback
-    - Performance optimization
+#### 2. **React Hooks là gì? Tại sao được tạo ra?**
 
-26. **Error Boundaries trong React**
+- useState, useEffect, useContext
+- Thay thế class components
+- Custom hooks
+
+3. **useEffect hook hoạt động như thế nào?**
+
+   - Dependency array
+   - Cleanup functions
+   - Component lifecycle equivalent
+
+4. **Context API vs Redux**
+
+   - State management solutions
+   - Khi nào sử dụng Context API
+   - Redux pattern và middleware
+
+5. **React component lifecycle**
+
+   - Mount, Update, Unmount phases
+   - Functional vs Class components
+   - Hooks equivalents
+
+6. **Controlled vs Uncontrolled components**
+
+   - Form handling
+   - Ref usage
+   - Best practices
+
+7. **React Router**
+
+   - Client-side routing
+   - Route parameters
+   - Protected routes
+
+8. **Higher-Order Components (HOC) vs Render Props**
+
+   - Pattern comparison
+   - Use cases
+   - Modern alternatives with hooks
+
+9. **Memoization trong React**
+
+   - React.memo()
+   - useMemo vs useCallback
+   - Performance optimization
+
+10. **Error Boundaries trong React**
 
     - Catching JavaScript errors
     - Fallback UI
     - Error reporting
 
-27. **Keys trong React lists**
+11. **Keys trong React lists**
 
     - Tại sao cần keys
     - Best practices
     - Performance impact
 
-28. **React.StrictMode là gì?**
+12. **React.StrictMode là gì?**
 
     - Development mode benefits
     - Double rendering
     - Deprecated API detection
 
-29. **Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)**
+13. **Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)**
 
     - SEO implications
     - Performance comparison
     - Next.js framework
 
-30. **React performance optimization**
+14. **React performance optimization**
     - Code splitting
     - Lazy loading
     - Bundle optimization
