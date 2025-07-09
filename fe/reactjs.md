@@ -209,11 +209,28 @@ function Toolbar() {
   - Middleware: Redux có hệ thống middleware mạnh mẽ cho phép bạn thêm logic vào quá trình gửi action(ví dụ: `redux-thunk` cho async operations, `redux-logger` để ghi nhật ký các thay đổi trạng thái).
   - Boilerplate nhiều hơn: Redux yêu cầu nhiều code và cấu hình hơn so với Context API.
 
-5. **React component lifecycle**
+#### **21. React component lifecycle**
 
-   - Mount, Update, Unmount phases
-   - Functional vs Class components
-   - Hooks equivalents
+React component lifecycle là các giai đoạn khác nhau trong quá trình tồn tại của một component, từ khi nó được tạo ra, cập nhật, cho đến khi bị xóa khỏi DOM.
+
+- Mount, Update, Unmount phases(các giai đoạn gắn kết, cập nhật, gỡ bõ):
+  - Mounting(Gắn kết): Component được tạo và chèn vào DOM.
+    - Class components: constructor, static getDerivedStateFromProps, render, componentDidMount.
+    - Functional components: `useEffect` với mảng phụ thuộc rỗng (`[]`).
+  - Updating (Cập Nhật): Component được render lại do thay đổi props hoặc state.
+    - Class components: `static getDerivedStateFromProps`, `shouldComponentUpdate`, `render`,`getSnapshotBeforeUpdate`, `componentDidUpdate`.
+    - Functional components: `useEffect` với các phụ thuộc thay đổi.
+  - Unmouting(Gỡ bõ): Component bị xóa khỏi DOM.
+    - Class components: componentWillUnmount.
+    - Funtional components: Hàm dọn dẹp (cleanup function) được trả về từ useEffect.
+- Functional vs Class components:
+  - Trước khi có hooks, chỉ class components mới có thể có state và lifecycle methods.
+  - Functional components trước đây được gọi là "stateless functional components" vì chúng chỉ nhận props và render UI
+- Hooks equivalents:
+  - useState: Thay thế cho this.state và this.setState.
+  - useEffect: Thay thế cho componentDidMount, componentDidUpdate, componentWillUnmount.
+  - useContext: Thay thế cho Context.Consumer và static contextType.
+  - useReducer: Một lựa chọn thay thế cho `useState` cho các trường hợp state phực tạp hơn, tương tự như redux.
 
 6. **Controlled vs Uncontrolled components**
 
