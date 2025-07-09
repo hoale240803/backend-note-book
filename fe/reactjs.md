@@ -54,7 +54,7 @@ return <ul>{items}</ul>;
   - Nhóm tất cả thay đổi thành một lần update duy nhất
   - Gửi update này với DOM thật -> Chỉ tốn một lần reflow/repaint.
 
-#### 17. **State vs Props trong React**
+#### **17. State vs Props trong React**
 
 - Khái niệm cốt lõi của React để quản lý dữ liệu trong các component
   - Immutable props(Props bất biến): - Props là dữ liệu được truyền từ component cha xuống component con. - Nghĩa là component con không thể trực tiếp thay đổi giá trị của props mà nó nhận được.
@@ -130,17 +130,38 @@ Tóm tắt:
 - Dữ liệu từ con lên cha: Con gọi hàm được truyền từ cha xuống
 - React giữ unidirectional data flow nhưng vẫn linh hoạt qua pattern "lifting state up";
 
-#### 2. **React Hooks là gì? Tại sao được tạo ra?**
+#### **18. React Hooks là gì? Tại sao được tạo ra?**
 
-- useState, useEffect, useContext
-- Thay thế class components
-- Custom hooks
+React Hooks là các hàm đặc biệt cho phép ta "móc nối" vào các tính năng của React (như state và lifecycle methods) và các functional components.
+
+- useState, useEffect, useContext:
+  `useState`: Cho phép thêm state vào functional components
+  `useEffect`: Cho phép thực hiện các side effects (tác dụng phụ) như fetch dữ liệu, subscribe sự kiện, thao tác DOM trực tiếp sau khi render.
+  `useContext`: Cho phép component subscribe vào React context.
+
+- Thay thế class components: Hooks được tạo ra để giải quyết một số vấn đề mà class components gặp phải, bao gồm:
+  - Logic trùng lặp và khó tái sử dụng: Với class components, việc tái sử dụng logic stateful giữa các component rất khó khăn.
+  - Classes gây nhầm lẫn cho người mới học: Khái niệm `this` trong Javascript có thể gây khó hiểu.
+  - Components phức tạp khó hiểu và kiểm thử: Các lifecyle methods trong class components có thể khiến logic liên quan bị phân tán.
+- Custom hooks: Bạn có thể tự tạo các custom hooks để tái sử dụng logic stateful phức tạp giữa các component, giúp code gọn gàng và dễ quản lý hơn.
+- Ví dụ: useFetch, useLocalStorage.
 
 3. **useEffect hook hoạt động như thế nào?**
 
-   - Dependency array
-   - Cleanup functions
-   - Component lifecycle equivalent
+   - Dependency array: Quy định khi nào `useEffect` chạy lại (chỉ khi dependencies thay đổi)
+   - Cleanup functions: Hàm trả về từ `useEffect` để dọn dẹp (ví dụ: hủy timer subscription).
+   - Component lifecycle equivalent: Tương đương `componentDidMount`,`componentDidUpdate`, `componentWillUnmount`.
+
+```jsx
+function App() {
+  const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    const timer = setInterval(() => console.log(count), 1000);
+    return () => clearInterval(timer); // Cleanup
+  }, [count]); // Dependency array
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
 
 4. **Context API vs Redux**
 
