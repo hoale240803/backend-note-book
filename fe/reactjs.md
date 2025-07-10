@@ -308,13 +308,74 @@ function UncontrolledForm() {
   - Thường xuyên ưu tiên sử dụng Controlled Components vì chúng cung cấp một luồng dữ liệu rõ ràng và dễ dự đoán hơn.
   - Sử dụng Uncontrolled Components khi bạn cần tích hợp với thư viện DOM không phải của React, hoặc khi hiệu suất là yếu tố quan trọng và bạn không cần React render lại component sau lỗi lần gõ phím.
 
-7. **React Router**
+#### **23. React Router**
 
-- Client-side routing
-- Route parameters
-- Protected routes
+React Router là một thư viện phổ biến để quản lý việc định tuyến (routing) trong các ứng dụng React một trang (Singple Page Application - SPAs).
 
-8. **Higher-Order Components (HOC) vs Render Props**
+- Client-side routing (Định tuyến phía client):
+  - React Router cho phép bạn tạo ra các URL khác nhau mà không cần tải lại toàn bộ trang từ server. Khi người dùng nhấp vào một liên kết, React Router sẽ thay đổi URL trên trình duyệt và reder component tương ứng.
+  - Ví dụ:
+
+```jsx
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+function App() {
+  return (
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
+  );
+}
+
+function Home() {
+  return <h2>Home Page</h2>;
+}
+function About() {
+  return <h2>About Page</h2>;
+}
+```
+
+- Route parameters (Tham số tuyến đường):
+  - Cho phép bạn truyền dữ liệu động thông qua URL. Ví dụ: `/users/:id` sẽ cho phép bạn lấy `id` của người dùng từ url.
+  - Sử dụng `useParams` để truy cập các tham số này.
+  - Ví dụ:
+
+```jsx
+import { useParams } from "react-router-dom";
+
+function UserProfile() {
+  const { id } = useParams(); // Lấy id từ URL
+  return <h2>User ID: {id}</h2>;
+}
+
+// Trong App.js:
+// <Route path="/users/:id" element={<UserProfile />} />
+```
+
+- Protected routes (Các tuyến đường được bảo vệ):
+  - Cho phép bạn hạn chế truy cập vào một số tuyến đường nhất định dựa trên những điều kiện (ví dụ: người dùng đã đăng nhập chưa)
+  - Thường triền khai bằng cách tạo một component wrapper kiểm tra điều kiện và điều hướng người dùng đến trang đăng nhập nếu họ không đủ quyền.
+  - Ví dụ(đơn giản):
+
+```jsx
+import { Navigate } from 'react-router-dom';
+
+function PrivateRoute({ children }) {
+  const isAuthenticated = /* logic kiểm tra người dùng đã đăng nhập */;
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+
+// Trong App.js:
+// <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+```
+
+#### **24. Higher-Order Components (HOC) vs Render Props**
 
 - Pattern comparison
 - Use cases
