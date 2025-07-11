@@ -377,13 +377,110 @@ function PrivateRoute({ children }) {
 
 #### **24. Higher-Order Components (HOC) vs Render Props**
 
-- Pattern comparison
-- Use cases
-- Modern alternatives with hooks
+HOC và Render props là hai kỹ thuật nâng cao trong React để chia sẽ logic và tái sử dụng code giữa các component.
 
-9. **Memoization trong React**
+- Pattern comparison (So sánh các mẫu):
+  - Higher-Order Components (HOC):
+    - Là một hàm nhận vào một component và trả về một component mới được "nâng cao"(enhanced) với các props hoặc logic bổ sung.
+    - Tương tự như Higher-Order Functions trong Javascript.
+    - Ví dụ: `withRouter` trong React Router v5, `connect` trong Redux.
+    - Cú pháp: `const EnhancedComponent = withData(MyComponent)`
+  - Render Props:
+    - Là một kĩ thuật truyền một hàm thông qua một prop. Hàm này chịu trách nhiệm render phân UI mà nó cần chia sẽ logic.
+    - Prop chứa hàm render thường được gọi là `render` (hoặc bất kỳ tên nào khác).
+    - Cú pháp `<DataSource render={data => <MyComponent data={data} />} />`
+- Use cases (Trường hợp sử dụng):
 
-- React.memo()
+  - HOC:
+    - Tái sử dụng logic không liên quan đến UI (ví dụ: quản lý authentication, logging, data, fetching)
+    - Khi bạn muốn thêm hành vi cho một component mà không cần thay đổi các cấu trúc của nó.
+    - Tái sử dụng các phương thức vòng đời (lifecycle methods) của class components.
+  - Render Props:
+    - Khi bạn muốn chia sẻ cảe logic và UI rendering linh hoạt hơn.
+    - Tạo ra các compoennt có thể tùy chỉnh hiển thị thông qua mộ hàm
+    - Ví dụ điển hình: `Context.Consumer` hoặc thư viện `Formik`
+
+- Modern alternatives with hooks (Các lựa chọn thay thế hiện đại với hooks):
+  - Với sự ra đời của React Hooks, cả HOC và Reder Props đều ít được sử dụng trức tiếp hơn để chia sẻ logic stateful.
+  - Custom Hooks đã trở thành phương pháp ưa thích để tái sử dụng logic không liên quan đến UI. Chúng đơn giản hơn, dễ đọc hơn và không gay ra các vấn đề như "wrapper hell" (quá nhiều HOC lồng nhau) hoặc xung đột props.
+  - Ví dụ:
+
+```jsx
+// HOC
+function withLogger(WrappedComponent) {
+  return function Logger(props) {
+    useEffect(() => {
+      console.log(
+        `${WrappedComponent.displayName || WrappedComponent.name} mounted`
+      );
+    }, []);
+    return <WrappedComponent {...props} />;
+  };
+}
+const MyComponentWithLogger = withLogger(MyComponent);
+
+// Render Props
+function DataFetcher({ render }) {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    // fetch data
+    setData("Fetched data");
+  }, []);
+  return render(data);
+}
+// <DataFetcher render={(data) => <MyComponent data={data} />} />
+
+// Custom Hook (Modern alternative)
+function useLogger(componentName) {
+  useEffect(() => {
+    console.log(`${componentName} mounted`);
+  }, [componentName]);
+}
+
+function MyComponent() {
+  useLogger("MyComponent");
+  return <div>Hello</div>;
+}
+```
+
+#### **25. Memoization trong React**
+
+Memoization là một kỹ thâutj tối ưu hiệu suất trong React bằng cách ghi nhớ kết quả của một hàm và trả về kết quả đã ghi nhớ đó nếu các đầu vào của hàm không thay đổi.
+
+- React.memo():
+  - Là một Higher-Order Component (HOC) dùng để tối ưu hiệu xuất cho functional components.
+  - Nó sẽ ghi nhớ (memoize) kết quả render của component và chỉ re-render component đó nếu các props của nó thay đổi.
+  - Giúp tránh các lần render không cần thiết cho các component con khi props của chúng không thay đổi, ngày cả khi componetn cha của chúng re-render.
+  - Ví dụ:
+
+```jsx
+import React from "react";
+
+const MyPureComponent = React.memo(function MyPureComponent(props) {
+  // Component này chỉ render lại nếu props.value thay đổi
+  console.log("MyPureComponent rendered");
+  return <div>{props.value}</div>;
+});
+
+function Parent() {
+  const [count, setCount] = React.useState(0);
+  const [text, setText] = React.useState("Hello");
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increment Count</button>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <MyPureComponent value={text} />{" "}
+      {/* MyPureComponent chỉ render khi text thay đổi */}
+    </div>
+  );
+}
+```
+
 - useMemo vs useCallback
 - Performance optimization
 
