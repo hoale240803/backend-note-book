@@ -504,17 +504,64 @@ const handleClick = useCallback(() => {
   - Memoization là một công cụ mạnh mẽ để giảm số lần re-render không cần thiết, đặc biệt trong các ứng dụng lớn với nheièu component và dữ liệu phức tạp.
   - Tuy nhiên, không phải lúc nao fcũng cần ap dụng meomization. Việc sử dụng quá mức có thể gây ra overhead do chính quá trình ghi nhớ và so sánh. Chỉ sử dụng khi bạn xác định được điểm nghẽn hiệu suất.
 
-10. **Error Boundaries trong React**
+#### **26. Error Boundaries trong React**
 
-- Catching JavaScript errors
-- Fallback UI
+Error Boundaries là các React Componets đặc biệt bắt lỗi Javacscript trong cây con của chúng, ghi lại các lỗi đó và hiển thị mộit UI dự phòng thay vì làm hỏng toàn bộ ứng dung.
+
+- Catching Javascript errors (Bắt lỗi trong Javascript):
+  - Error Boundaries bắt lỗi xảy ra trong các giai đoạn render, trong lifecycle methods, và trong các constructors của toàn bộ cây con bên dưới chúng
+  - Chúng không bắt được các lỗi sau:
+    - Lỗi trong event handlers (ví dụ: `onClick`, `onChange`)
+    - Lỗi trong code asynchronous (ví dụ: `setTimeout`, `fetch`).
+    - Lỗi trong chính Error Boundary.
+    - Lỗi từ Server-side Rendering.
+- Fallback UI (Giao diện người dùng dự phòng):
+  - Khi một lỗi được phát hiện, Error Boundary sẽ render một giao diện người dùng "dự phòng"
 - Error reporting
 
-11. **Keys trong React lists**
+#### **27. Keys trong React lists**
 
-- Tại sao cần keys
-- Best practices
-- Performance impact
+Keys là một thuộc tính đặc biệt mà bạn cần thêm vao các phân tử khi render một danh sách các component trong React.
+
+- Tại sao cần keys:
+  - React sử dụng keys để xác định duy nhất từng phần tử trong một danh sách và theo dõi sự thay đổi của chúng.
+  - Khi một danh sách thay đổi (ví dụ: thêm, xóa, sắp xếp lại phần tử), React sử dụng keys để so sánh các phần tử cũ và mới một cách hiệu quả trong quá trình reconciliation (đối chiếu Virtual DOM).
+  - Nếu không có keys (hoặc keys không duy nhất/ổn định), React có thể gặp vấn đề khi cập nhật DOM, dẫn đến bị lỗi hiển thị, vấn đề về hiệu suất, hoặc mất trạng thái của các component con.
+  - Ví dụ: Nếu không có keys, khi bạn thêm một item vào đầu danh sách, React có thể chỉ cập nhật nội dung của các item hiện có thay vì tạo mới/ sắp xếp lại, dẫn đến sai sót.
+- Best practices:
+  - Keys phải là duy nhất trong danh sách anh chị em (siblings): key chỉ cần duy nhất trong cùng một cấp độ của danh sách. Bạn có thể sự dụng cùng một key ở các danh sách khác nhau.
+  - Keys nên là một chuỗi hoặc số:
+  - Sử dụng ID ổn đinh: Cách tốt nhất là sử dụng một ID duy nhất và ổn định cho mỗi item từ dữ liệu của bạn (ví dụ: ID từ database).
+  - Tránh sử dụng index làm key: Việc sử dụng index của mảng làm key (`index` trong `map`) chỉ được chấp nhận trong các trường hợp rất cụ thể:
+    - Danh sách không thay đổi (không thêm, xóa, sắp xếp lại item).
+    - Danh sách không được lọc hoặc sắp xếp lại.
+    - Không có các item trong danh sách có ID riêng của chúng.
+    - Ví dụ:
+  ```jsx
+  // Tốt: Sử dụng ID duy nhất từ dữ liệu
+  const todos = [
+    { id: 1, text: "Learn React" },
+    { id: 2, text: "Build app" },
+  ];
+  <ul>
+    {todos.map((todo) => (
+      <li key={todo.id}>{todo.text}</li>
+    ))}
+  </ul>;
+  ```
+
+// Không tốt: Sử dụng index làm key (nếu danh sách có thể thay đổi)
+// Khi thêm/xóa/sắp xếp, có thể gây ra lỗi hoặc vấn đề hiệu suất
+
+<ul>
+  {todos.map((todo, index) => (
+    <li key={index}>{todo.text}</li>
+  ))}
+</ul>
+  ```
+- Performance impact (Tác động hiệu suất):
+  - Keys chính xác giúp React tối ưu hóa quá trình cập nhật DOM, giảm thiểu số lần thao tác DOM và cải thiện hiệu suất tổng thể.
+  - Keys không chính xác hoặc không ổn định có thể làm giảm hiệu suất, vì React có thể phải re-render toàn bộ danh sách thay vì chỉ cập nhật những phần tử cần thiết.
 
 12. **React.StrictMode là gì?**
 
