@@ -481,8 +481,28 @@ function Parent() {
 }
 ```
 
-- useMemo vs useCallback
-- Performance optimization
+- useMemo vs useCallback:
+- `useMemo`:
+  - Dùng để meomoize một giá trị được tính toán. Nó chỉ tính lại giá trị đó khi các dependencies (Các phần tử trong mảng phụ thuộc) thay đổi.
+  - Hữu ích khi bạn có các phép tính tốn kém hoặc khi bạn cần truyền một đối tượng/mảng ổn định qua props để tránh re-render không cần thiết ở compoennt con đã được `React.memo` bọc.
+
+```jsx
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+- `useCallback`
+  - Dùng để memoi một hàm callback. Nó chỉ tạo lại hàm đó khi các dependencies thay đổi.
+  - Quan trọng khi truyền các hàm xuống component con được bọc bởi `React.memo` để tránh việc component con re-render không cần thiết do hàm callback được tạo lại ở mỗi lần render của component cha.
+
+```jsx
+const handleClick = useCallback(() => {
+  // do something
+}, [dependency1, dependency2]);
+```
+
+- Performance optimization (Tối ưu hiệu suất):
+  - Memoization là một công cụ mạnh mẽ để giảm số lần re-render không cần thiết, đặc biệt trong các ứng dụng lớn với nheièu component và dữ liệu phức tạp.
+  - Tuy nhiên, không phải lúc nao fcũng cần ap dụng meomization. Việc sử dụng quá mức có thể gây ra overhead do chính quá trình ghi nhớ và so sánh. Chỉ sử dụng khi bạn xác định được điểm nghẽn hiệu suất.
 
 10. **Error Boundaries trong React**
 
