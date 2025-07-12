@@ -621,11 +621,47 @@ SSR và CSR là hai cách tiếp cận chính để hiển thị nội dung trê
   - Next.js là một framework React phổ biến hổ trợ cả SSR, CSR (còn gọi là static site generation - SSG, Incremental Static Regeneration - ISR)
   - Nó giúp đơn giản hóa việc triển khai SSR và các phương pháp render khác, cung cấp các tính năng như file-system routing, tối uuwu hóa hình ảnh, và API routes, giúp phát triển ứng dụng React hiệu quả hơn.
 
-14. **React performance optimization**
+#### **30. React performance optimization**
 
-- Code splitting
-- Lazy loading
-- Bundle optimization
+Tối ưu hóa hiệu suất là một phần quan trọng trong việc phát triển ứng dụng React để đảm bảo trải nghiệm người dùng mượt mà và nhanh chóng.
+
+- Code splitting (Tách mã):
+  - Là kỹ thuật chia nhỏ gói mã Javascript thành các phần nhỏ hơn, tải từng phần theo yêu cầu.
+  - Thay vì tải toàn bộ ứng dụng cùng một lúc, bạn chỉ tải những gì cần thiết cho một tuyết đường hoặc một component cụ thể.
+  - Giúp giảm kích thước gói ban đầu (initial bundle size) và cải thiện thời gian tải trang.
+  - Thường được thực hiện với `React.lazy` và `Suspense` cho code-splitting cấp độ component, hoặc các công cụ bundler như webpack/Rollup cho cấp đọ route.
+
+```jsx
+import React, { lazy, Suspense } from "react";
+
+const AboutPage = lazy(() => import("./AboutPage"));
+
+function App() {
+  return (
+    <div>
+      <h1>Welcome</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <AboutPage />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+- Lazy loading (Tải lười):
+
+  - Là một chiến lược tải tài nguyên (hình ảnh, video component) chỉ khi chúng thực sự cần thiết hoắc sắp xuất hiện trong khung nhìn của người dùng.
+  - Giúp giảm lượng dữ liệu cần tải ban đầu, cải thiện thời gian tải trang và sử dụng tài nguyên hiẹu quả hơ.
+  - `React.lazy` là một cách để thực hiện lazy loading cho các compoennt.
+
+- Bundle optimization (Tối ưu hóa gói mã):
+  - Liên quan đến việc giảm kích thước tổng thể của gói mã Javascript, Css và các tài nguyền khác được gửi đến trình duyệt
+  - Các kỹ thuật bao gồm
+    - Minification: Loại bỏ khoảng trắng, bình luận và rút gọn tên biến.
+    - Tree shaking: Loại bỏ code không sử dụng
+    - Compression: Sử dụng Gzip hoặc Brotli để nén các file
+    - Phân tích gói mã: Sử dụng các công cụ như Webpack bundler analyer để xác định các phần lớn nhất trong gói mã và tối ưu hóa chúng.
+  - Các công cụ như Create React App và Next.js đã tích hợp sẵn nhiều tối ưu hóa này.
 
 ### Tình huống React.js (15 câu)
 
