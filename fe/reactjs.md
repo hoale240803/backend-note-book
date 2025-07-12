@@ -563,17 +563,63 @@ Keys là một thuộc tính đặc biệt mà bạn cần thêm vao các phân 
   - Keys chính xác giúp React tối ưu hóa quá trình cập nhật DOM, giảm thiểu số lần thao tác DOM và cải thiện hiệu suất tổng thể.
   - Keys không chính xác hoặc không ổn định có thể làm giảm hiệu suất, vì React có thể phải re-render toàn bộ danh sách thay vì chỉ cập nhật những phần tử cần thiết.
 
-12. **React.StrictMode là gì?**
+#### **28. React.StrictMode là gì?**
 
-- Development mode benefits
-- Double rendering
-- Deprecated API detection
+React.StrictMode là một công cụ giúp phát hiện các vấn đề tiềm ẩn trong ứng dụng React trong quá trình phát triển.
 
-13. **Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)**
+- Development mode benefits (Lợi ích trong chế độ phát triển):
+  - Nó không render bất kì UI nào. Thay vào đó, nó bật thêm các kiểm tra và cảnh báo cho các thành phần con của nó.
+  - Các kiểm tra này chỉ chạy trong chế độ phát triển (develepment mode) và không ảnh hưởng đến hiệu suất hoặc hành vi của ứng dụng trong môi trường sản phẩm (production mode).
+- Double rendering (Render hai lần):
+  - Strict Mode sẽ tự động render các component hai lần trong chế độ phát triển.
+  - Mục đích là để phát hiện các side effects không mong muốn trong hàm `render` hoặc các constructors/lifecycle methods khác. Nếu component của bạn tạo ra các side effects (ví dụ: thay đổi trạng thái bên ngoài commponent) thì việc render hai lần có thể làm lộ ra lỗi.
+  - Ví dụ:
 
-- SEO implications
-- Performance comparison
-- Next.js framework
+```jsx
+import React from "react";
+
+function App() {
+  return (
+    <React.StrictMode>
+      <MyComponent />
+    </React.StrictMode>
+  );
+}
+```
+
+- Deprecated API detection (Phát hiện API không dùng nữa):
+  - Strict Mode cảnh báo bạn nếu bạn đang sử dụng các API cũ, không được khuyến khích hoặc sẽ bị loại bỏ trong các phiên bản React tương lai.
+  - Ví dụ: Các lifecycle methods cũ như `componentWillMount`,
+    `componentWillReceiveProps`, `componentWillUpdate` sẽ gây ra cảnh báo trong Strict Mode.
+  - Điều này giúp bạn giữ cho codebase của mình luôn cập nhật và sẵn sàng cho các phiên bản React mới hơn.
+
+#### **29. Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)**
+
+SSR và CSR là hai cách tiếp cận chính để hiển thị nội dung trên trình duyệt.
+
+- SEO implications (Ảnh hưởng đến SEO):
+  - Client-Side Rendering (CSR):
+    - Toàn bộ HTML và Javascript được tải về trình duyệt. Trình duyệt sau đó thực thi Javascript để render nội dung.
+    - Ban đầu, trang có thể trống hoặc chỉ chứa một spinner loading. Nội dung thực sự được tạo ra sau khi Javascript đã chạy.
+    - Ảnh hưởng SEO: Các công cụ tìm kiếm truyền thống có thể gặp khó khăn trong việc crawl và index nội dung được render bởi javascript. Mặc dù Google và một số công cụ tìm kiếm hiện đại đã cải thiện khả năng xử lý CSR, nhưng SSR vẫn thường được ưu tiên cho SEO.
+  - Server-Side Rendering (SSR):
+    - Trang html được render hoàn chỉnh trên server và gửi đến trình duyệt.
+    - Trình duyệt nhận được một trang html đã có đầy đủ nội dung, sau đó javascript được tải và thực thi để thêm tương tác (hydration).
+    - Ảnh hưởng SEO: rất tốt cho SEO vì các công cụ tìm kiếm nhận được nội dung đã render sẵn trong html, giúp việc crawl và index dễ dàng và đáng tin cậy hơn.
+- Performance comparison (So sánh hiệu suất):
+  - CSR:
+    - Time To First Byte (TTFB): Nhanh vì server chỉ gửi một HTML/JS nhỏ.
+    - First Contentful Paint(FCP): Chậm hơn hơn vì trình duyệt phải tải trang, phân tích cú pháp và thực thi JS trước khi hiển thị nội dung.
+    - First Interactive (FI): Có thể nhanh hoặc chậm tùy thuộc vào kich thước của JS.
+    - Phù hơp cho các ứng dụng có nhiều tương tác, không yêu cầu SEO cao và có thể chấp nhận thời gian tải ban đầu hơi chậm một chút.
+      -SSR:
+    - TTFB: Chậm hơn CSR một chút vì server cần render HTML.
+    - FCP: Nhanh hơn nhiều vì người dùng thấy nội dung ngay lập tức
+    - FI: Có thể chậm hơn FCP một chút vì trình duyệt vẫn cần tải và thực thi Javascript để thêm tương tác (hydration).
+    - Phù hợp cho các ứng dụng ưu tiên SEO, hiệu suất tải trang ban đầu (first meaningful paint) và những nơi cần nội dung hiển thị nhanh chóng.
+- Next.js framework:
+  - Next.js là một framework React phổ biến hổ trợ cả SSR, CSR (còn gọi là static site generation - SSG, Incremental Static Regeneration - ISR)
+  - Nó giúp đơn giản hóa việc triển khai SSR và các phương pháp render khác, cung cấp các tính năng như file-system routing, tối uuwu hóa hình ảnh, và API routes, giúp phát triển ứng dụng React hiệu quả hơn.
 
 14. **React performance optimization**
 
